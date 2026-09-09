@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { GradientCard } from "@/components/ui/gradient-card";
+import FloatingRecruitmentBubble from "@/components/home/floating-recruitment-bubble";
+import TenureRoadmap from "@/components/home/tenure-roadmap";
 
-import vitLogo from "@/assets/images/vit_logo/vit_logo.png";
-import ieeeLogo from "@/assets/images/footer/ieeeLogo.png";
+import ieeeLogo from "@/assets/images/footer/IEEE_logo2.png";
 import cardGif from "@/assets/images/card/right2_.gif";
 
 import ieeeDay from "@/assets/images/gallery/ieee_Day.jpeg";
@@ -43,16 +42,6 @@ const domains = [
       "One of our blockbusters, the coding club consists of all the enthusiastic programming geeks. The like-minded peeps meet twice a week in sessions organized exclusively for IEEE members. The instructors focus on helping you ace high profile questions solved from sites like Leetcode & Codeforces, along with various fun activities and competitions.",
   },
   {
-    title: "Cyber Security",
-    description:
-      "We live in the digital era. As a result, several frauds and malicious attacks have been documented. Cybersecurity is required to preserve the internet era and it protects you from cybercriminals. IEEE organizes influential webinars and workshops to help the attendees understand more about cyber security.",
-  },
-  {
-    title: "IoT",
-    description:
-      "Internet-of-Things gadgets are all around us, continually transferring data and talking to one another. Virtual assistants, smart electronics, and wearable health trackers are all examples of IoT devices we encounter daily. Each device collects data in real time and transmits it to make our lives more efficient.",
-  },
-  {
     title: "Research",
     description:
       "When tasked with finding a solution to a problem, research helps identify, assess, and collate. In universities, the research component allows for a more comprehensive educational experience. Our Research team is dedicated to keep you updated with the latest developments in the R&D sector of the technical domain in every possible way.",
@@ -75,6 +64,9 @@ const galleryItems = [
 export default function Home() {
   return (
     <div>
+      {/* Floating Action Bubble for Recruitment */}
+      <FloatingRecruitmentBubble />
+
       {/* Hero Section */}
       <section className="relative py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0">
@@ -98,109 +90,13 @@ export default function Home() {
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
               Advancing Technology towards Humanity
             </p>
-
-            
           </div>
         </div>
       </section>
-{/* Upcoming Events */}
-      <section className="py-20 border-t border-border/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">
-              Upcoming <span className="text-primary">Events</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Don&apos;t miss out on our latest events happening this month!
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* CodeZest'26 */}
-            <div className="rounded-2xl border-4 border-stone-300 bg-card/50 overflow-hidden hover:scale-105 transition-all">
-              <div className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">Hackathon</span>
-                  <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold">Offline</span>
-                </div>
-                <h3 className="text-2xl font-bold">CodeZest&apos;26</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  A competitive coding hackathon designed to challenge your logic, speed, and problem-solving skills. Compete across Junior &amp; Senior divisions!
-                </p>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-                    <p className="text-muted-foreground text-xs">Prize Pool</p>
-                    <p className="font-bold text-primary">₹30,000</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-                    <p className="text-muted-foreground text-xs">Team Size</p>
-                    <p className="font-bold">1–2 Members</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-                    <p className="text-muted-foreground text-xs">Entry Fee</p>
-                    <p className="font-bold">₹150 / team</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-                    <p className="text-muted-foreground text-xs">Venue</p>
-                    <p className="font-bold text-xs">VIT Pune</p>
-                  </div>
-                </div>
-                <a
-                  href="https://learner.vierp.in/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                >
-                  <Button className="gap-2">
-                    Register Now <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
+      {/* Tenure Roadmap & Process Flow Section */}
+      <TenureRoadmap />
 
-            {/* Gate Smashers Tech Talk */}
-            <div className="rounded-2xl border-4 border-stone-300 bg-card/50 overflow-hidden hover:scale-105 transition-all">
-              <div className="p-6 space-y-4">
-                <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold uppercase tracking-wider">Tech Talk</span>
-                  <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold">13th March</span>
-                </div>
-                <h3 className="text-2xl font-bold">Gate Smashers — Varun Singla</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  Are core CS subjects still relevant in the age of AI? Join Varun Singla, India&apos;s most trusted GATE mentor, as he explores why fundamentals still matter.
-                </p>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-start gap-2"><span className="text-primary">▹</span> Why CS fundamentals remain the backbone of great engineers</li>
-                  <li className="flex items-start gap-2"><span className="text-primary">▹</span> How to approach learning in the AI-driven landscape</li>
-                  <li className="flex items-start gap-2"><span className="text-primary">▹</span> Skills that will matter most for 2026 and beyond</li>
-                  <li className="flex items-start gap-2"><span className="text-primary">▹</span> The story behind Gate Smashers &amp; empowering millions</li>
-                </ul>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-                    <p className="text-muted-foreground text-xs">Date &amp; Time</p>
-                    <p className="font-bold">13th March, 1 PM</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-                    <p className="text-muted-foreground text-xs">Entry Fee</p>
-                    <p className="font-bold">₹150</p>
-                  </div>
-                </div>
-                
-                <a
-                  href="https://learner.vierp.in/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                >
-                  <Button className="gap-2">
-                    Register Now <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       {/* About IEEE */}
       <section className="py-20 border-t border-border/50">
         <div className="container mx-auto px-4">
@@ -221,7 +117,7 @@ export default function Home() {
                 </h3>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                IEEE is the world's largest technical professional organization, dedicated to advancing technology for the benefit of humanity. Founded in 1963, it has over 396,000 members in 160 countries. It develops global industry standards (e.g., IEEE 802.11 for Wi-Fi), publishes research, and hosts conferences. 
+                IEEE is the world's largest technical professional organization, dedicated to advancing technology for the benefit of humanity. Founded in 1963, it has over 396,000 members in 160 countries. It develops global industry standards (e.g., IEEE 802.11 for Wi-Fi), publishes research, and hosts conferences.
               </p>
               <div className="flex justify-end">
                 <Image src={ieeeLogo} alt="IEEE logo" width={100} height={100} className="h-20 w-20 object-contain" />
@@ -234,7 +130,7 @@ export default function Home() {
               <p className="text-muted-foreground leading-relaxed">
                 IEEE Student Branch VIT Pune is the first IEEE division on campus and one of the college's oldest clubs, celebrating 27 years of legacy in 2026. As the original student branch, we bring deep experience, a large community, and a strong track record of impact.
               </p>
-              
+
               <div className="flex justify-end">
                 <Image src={cardGif} alt="Tech animation" width={100} height={100} className="h-20 w-20 object-contain" />
               </div>
@@ -266,8 +162,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      
 
       {/* Gallery */}
       <section className="py-20 border-t border-border/50">
