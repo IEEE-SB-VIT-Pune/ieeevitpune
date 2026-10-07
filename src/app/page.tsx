@@ -1,5 +1,5 @@
 "use client";
-
+import FlexCarousel from "@/components/ui/FlexCarousel";
 import Link from "next/link";
 import Image from "next/image";
 import { GradientCard } from "@/components/ui/gradient-card";
@@ -8,6 +8,14 @@ import TenureRoadmap from "@/components/home/tenure-roadmap";
 
 import ieeeLogo from "@/assets/images/footer/IEEE_logo2.png";
 import cardGif from "@/assets/images/card/right2_.gif";
+
+import {
+  BrainCircuit,
+  Globe,
+  Smartphone,
+  Code2,
+  FlaskConical,
+} from "lucide-react";
 
 import ieeeDay from "@/assets/images/gallery/ieee_Day.jpeg";
 import codezest from "@/assets/images/gallery/CodeZest (2).jpg";
@@ -20,33 +28,33 @@ import pythonWorkshop from "@/assets/images/gallery/PythonWS.jpg";
 import socialVisit from "@/assets/images/gallery/Social_Visit.jpeg";
 import researchSession from "@/assets/images/gallery/Research_Session.jpeg";
 
-const domains = [
-  {
-    title: "AI - ML",
-    description:
-      "IEEE is absolutely aware of the rising significance of AI. Owing to its numerous applications, the club has even uploaded its own YouTube playlists of various AI based mini projects. In a recent workshop based on Neural Networks, the attendees were also taught to build a traffic recognition system right from scratch.",
-  },
-  {
-    title: "Web Dev",
-    description:
-      "IEEE VIT SB Pune actively indulges in one of the most lucrative and fast-growing technologies - web development. Few of our previous triumphs on this domain include the JavaScript workshop and Avenir - the frontend web dev competition, to name a few. The club also has its own team of web experts who undertake various industrial web dev projects.",
-  },
-  {
-    title: "App Dev",
-    description:
-      "Wanna engage well with your audience? Apps are one of the best ways to keep your audience engaged and committed. We also have our own master app dev team who are all-set to launch our very own app. Some of our previous exemplars in this field include a project on developing a Stock Inventory management app for APMC.",
-  },
-  {
-    title: "Coding Club",
-    description:
-      "One of our blockbusters, the coding club consists of all the enthusiastic programming geeks. The like-minded peeps meet twice a week in sessions organized exclusively for IEEE members. The instructors focus on helping you ace high profile questions solved from sites like Leetcode & Codeforces, along with various fun activities and competitions.",
-  },
-  {
-    title: "Research",
-    description:
-      "When tasked with finding a solution to a problem, research helps identify, assess, and collate. In universities, the research component allows for a more comprehensive educational experience. Our Research team is dedicated to keep you updated with the latest developments in the R&D sector of the technical domain in every possible way.",
-  },
-];
+// const domains = [
+//   {
+//     title: "AI - ML",
+//     description:
+//       "IEEE is absolutely aware of the rising significance of AI. Owing to its numerous applications, the club has even uploaded its own YouTube playlists of various AI based mini projects. In a recent workshop based on Neural Networks, the attendees were also taught to build a traffic recognition system right from scratch.",
+//   },
+//   {
+//     title: "Web Dev",
+//     description:
+//       "IEEE VIT SB Pune actively indulges in one of the most lucrative and fast-growing technologies - web development. Few of our previous triumphs on this domain include the JavaScript workshop and Avenir - the frontend web dev competition, to name a few. The club also has its own team of web experts who undertake various industrial web dev projects.",
+//   },
+//   {
+//     title: "App Dev",
+//     description:
+//       "Wanna engage well with your audience? Apps are one of the best ways to keep your audience engaged and committed. We also have our own master app dev team who are all-set to launch our very own app. Some of our previous exemplars in this field include a project on developing a Stock Inventory management app for APMC.",
+//   },
+//   {
+//     title: "Coding Club",
+//     description:
+//       "One of our blockbusters, the coding club consists of all the enthusiastic programming geeks. The like-minded peeps meet twice a week in sessions organized exclusively for IEEE members. The instructors focus on helping you ace high profile questions solved from sites like Leetcode & Codeforces, along with various fun activities and competitions.",
+//   },
+//   {
+//     title: "Research",
+//     description:
+//       "When tasked with finding a solution to a problem, research helps identify, assess, and collate. In universities, the research component allows for a more comprehensive educational experience. Our Research team is dedicated to keep you updated with the latest developments in the R&D sector of the technical domain in every possible way.",
+//   },
+// ];
 
 const galleryItems = [
   { src: ieeeDay, label: "IEEE Day 2025" },
@@ -59,6 +67,39 @@ const galleryItems = [
   { src: pythonWorkshop, label: "Python Workshop" },
   { src: socialVisit, label: "Social Visit" },
   { src: researchSession, label: "Research Session" },
+];
+
+const domains = [
+  {
+    title: "AI - ML",
+    description: "Build intelligent systems and explore real-world AI applications.",
+    icon: BrainCircuit,
+    points: ["Machine Learning", "Neural Networks", "AI Projects"],
+  },
+  {
+    title: "Web Dev",
+    description: "Create modern, interactive websites and real-world web projects.",
+    icon: Globe,
+    points: ["Frontend", "JavaScript", "React & UI"],
+  },
+  {
+    title: "App Dev",
+    description: "Design and develop applications that solve real-world problems.",
+    icon: Smartphone,
+    points: ["Android Apps", "Flutter", "App Projects"],
+  },
+  {
+    title: "Coding Club",
+    description: "Sharpen your problem-solving skills through competitive programming.",
+    icon: Code2,
+    points: ["DSA", "LeetCode", "Codeforces"],
+  },
+  {
+    title: "Research",
+    description: "Explore emerging technologies and turn ideas into meaningful research.",
+    icon: FlaskConical,
+    points: ["R&D", "Innovation", "Technical Research"],
+  },
 ];
 
 export default function Home() {
@@ -102,7 +143,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-3">
-              About <span className="text-primary">IEEE</span>
+              Why <span className="text-primary">IEEE</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Learn about the global organization and our student branch at VIT Pune.
@@ -132,7 +173,7 @@ export default function Home() {
               </p>
 
               <div className="flex justify-end">
-                <Image src={cardGif} alt="Tech animation" width={100} height={100} className="h-20 w-20 object-contain" />
+                <Image src={ieeeLogo} alt="Tech animation" width={100} height={100} className="h-20 w-20 object-contain" />
               </div>
             </div>
           </div>
@@ -157,6 +198,8 @@ export default function Home() {
                 key={domain.title}
                 title={domain.title}
                 description={domain.description}
+                icon={domain.icon}
+                points={domain.points}
               />
             ))}
           </div>
@@ -174,26 +217,21 @@ export default function Home() {
               Moments from our workshops, talks, and community events.
             </p>
           </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {galleryItems.map((item) => (
-              <div
-                key={item.label}
-                className="group rounded-2xl border-4 border-stone-300 bg-card/50 overflow-hidden hover:scale-105 transition-all"
-              >
-                <div className="relative h-52">
-                  <Image
-                    src={item.src}
-                    alt={item.label}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform"
-                  />
-                </div>
-                <div className="p-4">
-                  <p className="text-sm font-semibold">{item.label}</p>
-                </div>
-              </div>
-            ))}
+            <div className="h-[420px]">
+          <FlexCarousel
+            items={galleryItems.map((item) => ({
+              src: item.src.src,
+              alt: item.label,
+              title: item.label,
+            }))}
+            preset="liquid"
+            intro="rise"
+            cardHeight={0.8}
+            gap={12}
+            radius={18}
+            captions={true}
+            focusOnClick={true}
+          />
           </div>
         </div>
       </section>
