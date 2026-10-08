@@ -136,7 +136,7 @@ export function EventCard({ event }: EventCardProps) {
                   type="button"
                   aria-label="Close event details"
                   onClick={() => setActive(false)}
-                  className="absolute right-3 top-3 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/40 bg-background/90 text-primary shadow-[0_0_18px_rgba(0,217,255,0.18)] backdrop-blur-md transition-all hover:border-primary hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-4 sm:top-4"
+                  className="absolute right-3 top-3 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/40 bg-background/90 text-primary shadow-[0_0_18px_rgba(0,217,255,0.18)] backdrop-blur-md transition-all  sm:right-4 sm:top-4"
                 >
                   <X className="h-5 w-5" />
                 </button>
