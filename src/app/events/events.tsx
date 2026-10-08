@@ -61,10 +61,10 @@ export const UPCOMING_EVENTS = [
     id: "ieee-day-2026",
     title: "IEEE DAY",
     category: "IEEE Day",
-    date: "Date TBA",
+    date: "21 October",
     time: "12:00 PM – 3:15 PM",
     venue:
-      "Vishwakarma Institute of Technology, Bibwewadi Campus, Pune - 411037 (Auditorium - Sharad Arena)",
+      "VIT Pune Bibwewadi Campus (Auditorium - Sharad Arena)",
     mode: "OFFLINE",
     image: aiAgentsWorkshop.src,
     shortDescription:
@@ -110,31 +110,6 @@ export const UPCOMING_EVENTS = [
           </p>
         </section>
 
-        <section className="space-y-3">
-          <h3>Follow Love Babbar</h3>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="https://www.youtube.com/@LoveBabbar"
-              target="_blank"
-              rel="noreferrer"
-              onClick={(event) => event.stopPropagation()}
-              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/25 px-4 py-2 font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
-            >
-              <Youtube className="h-4 w-4" />
-              @LoveBabbar
-            </a>
-            <a
-              href="https://www.instagram.com/lovebabbar1/"
-              target="_blank"
-              rel="noreferrer"
-              onClick={(event) => event.stopPropagation()}
-              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/25 px-4 py-2 font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
-            >
-              <Instagram className="h-4 w-4" />
-              @lovebabbar1
-            </a>
-          </div>
-        </section>
 
         <section className="space-y-3">
           <h3>What to Expect</h3>
@@ -195,13 +170,6 @@ export const UPCOMING_EVENTS = [
               collaborative learning community.
             </li>
           </ul>
-        </section>
-
-        <section className="space-y-3">
-          <h3>Organized By</h3>
-          <p>
-            <strong>IEEE Student Branch VIT Pune</strong>
-          </p>
         </section>
 
         <section className="space-y-3">
