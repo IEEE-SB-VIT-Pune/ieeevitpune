@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useId, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 
@@ -14,9 +15,10 @@ type EventCardProps = {
 };
 
 export function EventCard({ event }: EventCardProps) {
-  const [active, setActive] = useState<Event | null>(null);
+  const [active, setActive] = useState(false);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
+  const layoutKey = `${event.id}-${id}`;
 
   useEffect(() => {
     document.body.style.overflow = active ? "hidden" : "";
@@ -27,13 +29,11 @@ export function EventCard({ event }: EventCardProps) {
   }, [active]);
 
   useEffect(() => {
-    if (!active) {
-      return;
-    }
+    if (!active) return;
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setActive(null);
+    const handleKeyDown = (keyboardEvent: KeyboardEvent) => {
+      if (keyboardEvent.key === "Escape") {
+        setActive(false);
       }
     };
 
@@ -46,12 +46,9 @@ export function EventCard({ event }: EventCardProps) {
 
   useOutsideClick(ref, () => {
     if (active) {
-      setActive(null);
+      setActive(false);
     }
   });
-
-  const layoutKey = `${event.id}-${id}`;
-  const imageAvailable = Boolean(event.image);
 
   return (
     <>
@@ -59,12 +56,13 @@ export function EventCard({ event }: EventCardProps) {
         layoutId={`event-card-${layoutKey}`}
         role="button"
         tabIndex={0}
+        aria-expanded={active}
         aria-label={`View details for ${event.title}`}
-        onClick={() => setActive(event)}
+        onClick={() => setActive(true)}
         onKeyDown={(keyboardEvent) => {
           if (keyboardEvent.key === "Enter" || keyboardEvent.key === " ") {
             keyboardEvent.preventDefault();
-            setActive(event);
+            setActive(true);
           }
         }}
         className="group w-full cursor-pointer overflow-hidden rounded-2xl border border-border/80 bg-card/75 text-left shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_18px_50px_rgba(0,217,255,0.10)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -73,11 +71,13 @@ export function EventCard({ event }: EventCardProps) {
           layoutId={`event-image-${layoutKey}`}
           className="relative aspect-[3/2] w-full overflow-hidden bg-muted/40"
         >
-          {imageAvailable ? (
-            <img
+          {event.image ? (
+            <Image
               src={event.image}
               alt={event.title}
-              className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
             />
           ) : (
             <div className="grid h-full place-items-center text-sm font-medium text-muted-foreground">
@@ -112,7 +112,7 @@ export function EventCard({ event }: EventCardProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setActive(null)}
+              onClick={() => setActive(false)}
               aria-hidden="true"
             />
 
@@ -134,7 +134,7 @@ export function EventCard({ event }: EventCardProps) {
                 <button
                   type="button"
                   aria-label="Close event details"
-                  onClick={() => setActive(null)}
+                  onClick={() => setActive(false)}
                   className="absolute right-3 top-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground backdrop-blur transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-4 sm:top-4"
                 >
                   <X className="h-4 w-4" />
@@ -142,13 +142,15 @@ export function EventCard({ event }: EventCardProps) {
 
                 <motion.div
                   layoutId={`event-image-${layoutKey}`}
-                  className="relative aspect-[3/2] w-full shrink-0 overflow-hidden bg-muted/40"
+                  className="relative aspect-[3/2] w-full shrink-0 overflow-hidden bg-muted/40 sm:max-h-[44vh]"
                 >
-                  {imageAvailable ? (
-                    <img
+                  {event.image ? (
+                    <Image
                       src={event.image}
                       alt={event.title}
-                      className="h-full w-full object-cover object-center"
+                      fill
+                      sizes="100vw"
+                      className="object-cover object-center"
                     />
                   ) : null}
                 </motion.div>
