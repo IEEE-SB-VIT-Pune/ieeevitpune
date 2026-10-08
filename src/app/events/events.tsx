@@ -1,5 +1,5 @@
 import type { ComponentType, ReactNode } from "react";
-import { Ticket } from "lucide-react";
+import { Instagram, Ticket, Youtube } from "lucide-react";
 
 import codeGif from "@/assets/images/events/eventPage_Animation/code.gif";
 import neuralGif from "@/assets/images/events/eventPage_Animation/neural.gif";
@@ -10,6 +10,17 @@ export type EventCTA = {
   href: string;
   variant: "primary" | "secondary";
   icon: ComponentType<{ className?: string }>;
+};
+
+export type EventSpeaker = {
+  name: string;
+  headline: string;
+  bio: string;
+  links: {
+    label: string;
+    href: string;
+    icon: ComponentType<{ className?: string }>;
+  }[];
 };
 
 export type Event = {
@@ -23,7 +34,26 @@ export type Event = {
   image?: string;
   shortDescription: string;
   description: ReactNode;
+  speaker?: EventSpeaker;
   ctas?: EventCTA[];
+};
+
+const LOVE_BABBAR: EventSpeaker = {
+  name: "Love Babbar",
+  headline: "Software Engineer • YouTuber • Co-founder, CodeHelp",
+  bio: "Love Babbar is a software engineer and YouTuber known for coding and software engineering education. He has worked at Amazon and Microsoft and has built a large student community through practical content around programming, placement preparation, interview experiences, and career growth.",
+  links: [
+    {
+      label: "@LoveBabbar",
+      href: "https://www.youtube.com/@LoveBabbar",
+      icon: Youtube,
+    },
+    {
+      label: "@lovebabbar1",
+      href: "https://www.instagram.com/lovebabbar1/",
+      icon: Instagram,
+    },
+  ],
 };
 
 export const UPCOMING_EVENTS = [
@@ -38,40 +68,83 @@ export const UPCOMING_EVENTS = [
     mode: "OFFLINE",
     image: aiAgentsWorkshop.src,
     shortDescription:
-      "IEEE DAY, themed TECH PE CHARCHA, connects students with industry perspectives on emerging technology and career growth through podcast-style sessions and interactive Q&A.",
+      "TECH PE CHARCHA is an industry-focused IEEE DAY experience featuring a podcast-style conversation with Love Babbar, practical technology and career insights, and an interactive audience Q&A.",
+    speaker: LOVE_BABBAR,
     description: (
-      <div className="space-y-6">
-        <div className="space-y-3">
+      <div className="space-y-7">
+        <section className="space-y-3">
+          <h3>About IEEE DAY</h3>
           <p>
-            <strong>IEEE DAY</strong> is being conducted by{" "}
-            <strong>IEEE Student Branch VIT Pune</strong> to give students
-            direct exposure to real industry experiences and evolving
-            technology trends.
+            IEEE DAY is being conducted by <strong>IEEE Student Branch VIT Pune</strong>{" "}
+            to give students direct exposure to real industry experiences and
+            evolving technology trends.
           </p>
           <p>
-            The event aims to bridge the gap between classroom learning and
-            professional practice, offering practical guidance for career
-            growth and encouraging innovation, critical thinking, and
+            The event is designed to bridge the gap between classroom learning
+            and professional practice, offering practical guidance for career
+            growth while encouraging innovation, critical thinking, and
             confidence to pursue ambitious projects.
           </p>
-        </div>
+        </section>
 
-        <div>
-          <h3>Theme</h3>
+        <section className="space-y-3">
+          <h3>Theme — TECH PE CHARCHA</h3>
           <p>
-            <strong>TECH PE CHARCHA</strong>
+            The event brings students into an open, practical conversation about
+            technology, careers, and the changing tech landscape.
           </p>
-        </div>
+        </section>
 
-        <div>
+        <section className="space-y-3">
+          <h3>About Love Babbar</h3>
+          <p>
+            Love Babbar is a software engineer and YouTuber known for his coding
+            and software engineering content. He is the co-founder of CodeHelp
+            and has built an extensive student-focused learning community.
+          </p>
+          <p>
+            His work focuses on making programming, placement preparation,
+            interview experiences, and career guidance more approachable for
+            students and aspiring software engineers. He has also worked at
+            Amazon and Microsoft.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h3>Follow Love Babbar</h3>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="https://www.youtube.com/@LoveBabbar"
+              target="_blank"
+              rel="noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/25 px-4 py-2 font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+            >
+              <Youtube className="h-4 w-4" />
+              @LoveBabbar
+            </a>
+            <a
+              href="https://www.instagram.com/lovebabbar1/"
+              target="_blank"
+              rel="noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/25 px-4 py-2 font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+            >
+              <Instagram className="h-4 w-4" />
+              @lovebabbar1
+            </a>
+          </div>
+        </section>
+
+        <section className="space-y-3">
           <h3>What to Expect</h3>
           <ul>
             <li>
-              Dynamic podcast-style sessions led by accomplished industry
+              Podcast-style sessions led by accomplished industry
               professionals sharing real-world technology and career insights.
             </li>
             <li>
-              Expert perspectives, practical advice, and trend analysis to help
+              Practical advice, expert perspectives, and trend analysis to help
               students understand the evolving technology landscape.
             </li>
             <li>
@@ -79,16 +152,9 @@ export const UPCOMING_EVENTS = [
               with speakers and get personalized guidance.
             </li>
           </ul>
-        </div>
+        </section>
 
-        <div>
-          <h3>Guest</h3>
-          <p>
-            <strong>Mr. Love Babbar</strong>
-          </p>
-        </div>
-
-        <div>
+        <section className="space-y-3">
           <h3>Event Flow</h3>
           <ul>
             <li>
@@ -101,8 +167,7 @@ export const UPCOMING_EVENTS = [
               interactive opening activity.
             </li>
             <li>
-              <strong>1:00 PM – 2:30 PM:</strong> Podcast with Mr. Babbar,
-              including a 1 hour 15 minute podcast segment.
+              <strong>1:00 PM – 2:30 PM:</strong> Podcast with Mr. Babbar.
             </li>
             <li>
               <strong>2:30 PM – 2:45 PM:</strong> Interactive Q&A session with
@@ -113,31 +178,33 @@ export const UPCOMING_EVENTS = [
               guest escort.
             </li>
           </ul>
-        </div>
+        </section>
 
-        <div>
-          <h3>Expected Outcomes</h3>
+        <section className="space-y-3">
+          <h3>Why Attend?</h3>
           <ul>
             <li>
               Gain valuable knowledge on emerging technologies and career
               guidance.
             </li>
             <li>
-              Connect with role models to gain mentorship and inspiration.
+              Connect with a role model and gain mentorship and inspiration.
             </li>
             <li>
               Network with peers who share similar interests and build a
               collaborative learning community.
             </li>
           </ul>
-        </div>
+        </section>
 
-        <div>
+        <section className="space-y-3">
           <h3>Organized By</h3>
-          <p>IEEE Student Branch VIT Pune</p>
-        </div>
+          <p>
+            <strong>IEEE Student Branch VIT Pune</strong>
+          </p>
+        </section>
 
-        <div>
+        <section className="space-y-3">
           <h3>Contact</h3>
           <p>
             Vice Chairperson – Shalvi Maheshwari
@@ -149,7 +216,7 @@ export const UPCOMING_EVENTS = [
             <br />
             +91 9529604447
           </p>
-        </div>
+        </section>
       </div>
     ),
     ctas: [
