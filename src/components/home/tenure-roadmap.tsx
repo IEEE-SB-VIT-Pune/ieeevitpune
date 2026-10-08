@@ -56,8 +56,25 @@ const steps: StepItem[] = [
   {
     id: 3,
     stepNumber: "03",
+    title: "IEEE Day",
+  badge: "Phase 03 · Connect",
+  shortDesc:
+    "A fresher-focused event featuring inspiring speaker sessions, interactive panel discussions, and meaningful conversations.",
+  fullDesc:
+    "IEEE Day welcomes freshers into the IEEE community through engaging speaker sessions and insightful panel discussions. The event gives students an opportunity to interact with experienced speakers, explore new perspectives, and connect with the wider IEEE community.",
+  highlights: [
+    "Speaker Sessions",
+    "Panel Discussions",
+    "Fresher Engagement"
+  ],
+  icon: Crown,
+    accentColor: "from-pink-500 to-rose-600",
+  },
+  {
+    id: 4,
+    stepNumber: "04",
     title: "Project & Domain Teams",
-    badge: "Phase 03 · Execution",
+    badge: "Phase 04· Execution",
     shortDesc: "Forming domain squads to build real-world software, APMC systems & research papers.",
     fullDesc:
       "Execom members are deployed into specialized domain squads. Teams build live web/mobile applications, conduct AI/ML mini-projects, draft research papers, and secure corporate sponsorships.",
@@ -66,10 +83,10 @@ const steps: StepItem[] = [
     accentColor: "from-blue-500 to-cyan-400",
   },
   {
-    id: 4,
-    stepNumber: "04",
+    id: 5,
+    stepNumber: "05",
     title: "Tech Talks ",
-    badge: "Phase 04 · Engagement",
+    badge: "Phase 05 · Engagement",
     shortDesc: "Organizing campus-wide workshops, AI Agents bootcamps & GSoC expert talks.",
     fullDesc:
       "Hosting high-impact student workshops and guest lectures. Highlights include Neural Networks bootcamps, Gate Smashers Tech Talk with Varun Singla, Web3 seminars, and GSoC preparation sessions.",
@@ -78,28 +95,21 @@ const steps: StepItem[] = [
     accentColor: "from-emerald-500 to-teal-400",
   },
   {
-    id: 5,
-    stepNumber: "05",
-    title: "Flagship Hackathons",
-    badge: "Phase 05 · Flagships",
-    shortDesc: "CodeZest, Avenir web championships & competitive coding battles.",
-    fullDesc:
-      "Executing IEEE VIT Pune's annual flagship events: CodeZest competitive coding and Workshops, featuring cash prize pools and participants from top institutes.",
-    highlights: ["CodeZest", "Emerging Workshop", "Cash Prize Pools"],
-    icon: Trophy,
-    accentColor: "from-amber-500 to-orange-500",
-  },
-  {
     id: 6,
     stepNumber: "06",
-    title: "IEEE Day & Handover",
-    badge: "Phase 06 · Legacy",
-    shortDesc: "Annual branch celebrations, felicitations & passing the torch to the next Execom.",
-    fullDesc:
-      "Celebrating 27+ years of IEEE legacy at VIT Pune. Members receive official IEEE certification, outstanding performance awards are presented, and the tenure smoothly transitions to the next Execom core.",
-    highlights: ["27+ Years Legacy", "Certificate Distribution", "Core Handover & Ceremony"],
-    icon: Crown,
-    accentColor: "from-pink-500 to-rose-600",
+    title: "Flagship Hackathon & Handover",
+  badge: "Phase 06 · Flagships",
+  shortDesc:
+    "Flagship hackathon, workshops, recognition, and transferring the 27+ year legacy to the next Execom.",
+  fullDesc:
+    "The tenure concludes with IEEE VIT Pune's flagship events such as CodeZest and Avenir, bringing together competitive coding, web development, workshops, and participants from across institutes. The phase culminates with recognition of outstanding contributions and the formal handover to the next Execom.",
+  highlights: [
+    "CodeZest & Avenir",
+    "Awards & Recognition",
+    "Execom Handover",
+  ],
+  icon: Trophy,
+    accentColor: "from-amber-500 to-orange-500",
   },
 ];
 

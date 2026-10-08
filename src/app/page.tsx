@@ -3,7 +3,7 @@ import FlexCarousel from "@/components/ui/FlexCarousel";
 import Link from "next/link";
 import Image from "next/image";
 import { GradientCard } from "@/components/ui/gradient-card";
-import FloatingRecruitmentBubble from "@/components/home/floating-recruitment-bubble";
+// import FloatingRecruitmentBubble from "@/components/home/floating-recruitment-bubble";
 import TenureRoadmap from "@/components/home/tenure-roadmap";
 
 import ieeeLogo from "@/assets/images/footer/IEEE_logo2.png";
@@ -106,7 +106,7 @@ export default function Home() {
   return (
     <div>
       {/* Floating Action Bubble for Recruitment */}
-      <FloatingRecruitmentBubble />
+      {/* <FloatingRecruitmentBubble /> */}
 
       {/* Hero Section */}
       <section className="relative py-24 md:py-32 overflow-hidden">
