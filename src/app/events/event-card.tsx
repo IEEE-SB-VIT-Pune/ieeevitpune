@@ -136,13 +136,12 @@ export function EventCard({ event }: EventCardProps) {
                   type="button"
                   aria-label="Close event details"
                   onClick={() => setActive(false)}
-                  className="absolute right-3 top-3 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/40 bg-background/90 text-primary shadow-[0_0_18px_rgba(0,217,255,0.18)] backdrop-blur-md transition-all  sm:right-4 sm:top-4"
+                  className="absolute right-3 top-3 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/40 bg-background/90 text-primary shadow-[0_0_18px_rgba(0,217,255,0.18)] backdrop-blur-md transition-all sm:right-4 sm:top-4"
                 >
                   <X className="h-5 w-5" />
                 </button>
 
                 <div className="relative max-h-[94vh] overflow-y-auto overscroll-contain [scrollbar-color:rgba(0,217,255,0.42)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/35 [&::-webkit-scrollbar-thumb]:hover:bg-primary/60">
-
                   <motion.div
                     layoutId={`event-image-${layoutKey}`}
                     className="relative aspect-[3/2] w-full overflow-hidden bg-muted/40"
@@ -214,6 +213,45 @@ export function EventCard({ event }: EventCardProps) {
                     </div>
                   </div>
 
+                  {event.speaker ? (
+                    <section className="border-b border-border/70 px-5 py-5 sm:px-7 sm:py-6">
+                      <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5 sm:p-6">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
+                          Featured Speaker
+                        </p>
+                        <h3 className="mt-2 text-2xl font-bold text-foreground">
+                          {event.speaker.name}
+                        </h3>
+                        <p className="mt-1 text-sm font-semibold text-primary">
+                          {event.speaker.headline}
+                        </p>
+                        <p className="mt-4 text-sm leading-7 text-muted-foreground sm:text-[15px]">
+                          {event.speaker.bio}
+                        </p>
+
+                        <div className="mt-5 flex flex-wrap gap-3">
+                          {event.speaker.links.map((link) => {
+                            const Icon = link.icon;
+
+                            return (
+                              <a
+                                key={link.href}
+                                href={link.href}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={(clickEvent) => clickEvent.stopPropagation()}
+                                className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/60 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                              >
+                                <Icon className="h-4 w-4" />
+                                {link.label}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </section>
+                  ) : null}
+
                   <div className="px-5 py-5 pb-36 sm:px-7 sm:py-6 sm:pb-40">
                     <div className="text-sm leading-7 text-muted-foreground sm:text-[15px] [&_a]:font-semibold [&_a]:text-primary [&_a]:underline-offset-4 [&_a]:hover:underline [&_blockquote]:border-l-2 [&_blockquote]:border-primary/50 [&_blockquote]:pl-4 [&_blockquote]:italic [&_h3]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-foreground [&_li]:leading-7 [&_p+p]:mt-4 [&_strong]:font-bold [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5">
                       {event.description}
@@ -225,7 +263,7 @@ export function EventCard({ event }: EventCardProps) {
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-end p-3 sm:p-5">
                     <div className="pointer-events-auto relative">
                       <div className="absolute -inset-x-8 -bottom-4 -top-8 bg-gradient-to-t from-card via-card/90 to-transparent blur-xl" />
-                      <div className="relative flex max-w-full flex-wrap justify-end gap-2 rounded-2xl  sm:rounded-full">
+                      <div className="relative flex max-w-full flex-wrap justify-end gap-2 rounded-2xl sm:rounded-full">
                         {event.ctas.map((cta) => {
                           const Icon = cta.icon;
 
