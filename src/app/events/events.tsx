@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { Ticket } from "lucide-react";
 
 import codeGif from "@/assets/images/events/eventPage_Animation/code.gif";
@@ -22,11 +22,11 @@ export type Event = {
   mode: "ONLINE" | "OFFLINE" | "HYBRID";
   image?: string;
   shortDescription: string;
-  description: React.ReactNode;
+  description: ReactNode;
   ctas?: EventCTA[];
 };
 
-export const EVENTS = [
+export const UPCOMING_EVENTS = [
   {
     id: "future-of-ai",
     title: "The Future of AI: From Ideas to Impact",
@@ -78,6 +78,9 @@ export const EVENTS = [
       },
     ],
   },
+] satisfies readonly Event[];
+
+export const PREVIOUS_EVENTS = [
   {
     id: "gate-smashers",
     title: "Gate Smashers — Varun Singla",
