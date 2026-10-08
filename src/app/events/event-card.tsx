@@ -108,10 +108,11 @@ export function EventCard({ event }: EventCardProps) {
         {active ? (
           <>
             <motion.div
-              className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-[2px]"
+              className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-[3px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={() => setActive(false)}
               aria-hidden="true"
             />
@@ -131,7 +132,7 @@ export function EventCard({ event }: EventCardProps) {
                 transition={{ duration: 0.25, ease: "easeOut" }}
                 className="relative max-h-[94vh] w-full max-w-4xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl sm:rounded-3xl"
               >
-                <div className="max-h-[94vh] overflow-y-auto overscroll-contain scroll-pb-32">
+                <div className="relative max-h-[94vh] overflow-y-auto overscroll-contain [scrollbar-color:rgba(0,217,255,0.42)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/35 [&::-webkit-scrollbar-thumb]:hover:bg-primary/60">
                   <button
                     type="button"
                     aria-label="Close event details"
@@ -212,7 +213,7 @@ export function EventCard({ event }: EventCardProps) {
                     </div>
                   </div>
 
-                  <div className="px-5 py-5 pb-32 sm:px-7 sm:py-6 sm:pb-36">
+                  <div className="px-5 py-5 pb-36 sm:px-7 sm:py-6 sm:pb-40">
                     <div className="text-sm leading-7 text-muted-foreground sm:text-[15px] [&_a]:font-semibold [&_a]:text-primary [&_a]:underline-offset-4 [&_a]:hover:underline [&_blockquote]:border-l-2 [&_blockquote]:border-primary/50 [&_blockquote]:pl-4 [&_blockquote]:italic [&_h3]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-foreground [&_li]:leading-7 [&_p+p]:mt-4 [&_strong]:font-bold [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5">
                       {event.description}
                     </div>
@@ -220,34 +221,37 @@ export function EventCard({ event }: EventCardProps) {
                 </div>
 
                 {event.ctas?.length ? (
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-end p-4 sm:p-6">
-                    <div className="pointer-events-auto flex max-w-full flex-wrap justify-end gap-2 rounded-2xl border border-border/80 bg-background/90 p-2 shadow-xl backdrop-blur-md sm:rounded-full">
-                      {event.ctas.map((cta) => {
-                        const Icon = cta.icon;
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-end p-3 sm:p-5">
+                    <div className="pointer-events-auto relative">
+                      <div className="absolute -inset-x-8 -bottom-4 -top-8 bg-gradient-to-t from-card via-card/90 to-transparent blur-xl" />
+                      <div className="relative flex max-w-full flex-wrap justify-end gap-2 rounded-2xl border border-border/80 bg-background/92 p-2 shadow-[0_10px_35px_rgba(0,0,0,0.45)] backdrop-blur-md sm:rounded-full">
+                        {event.ctas.map((cta) => {
+                          const Icon = cta.icon;
 
-                        return (
-                          <a
-                            key={`${event.id}-${cta.label}`}
-                            href={cta.href}
-                            target={cta.href.startsWith("http") ? "_blank" : undefined}
-                            rel={cta.href.startsWith("http") ? "noreferrer" : undefined}
-                            onClick={(clickEvent) => clickEvent.stopPropagation()}
-                            className={cn(
-                              buttonVariants({
-                                variant:
-                                  cta.variant === "secondary"
-                                    ? "outline"
-                                    : "default",
-                                size: "lg",
-                              }),
-                              "min-w-[150px] sm:min-w-[160px]"
-                            )}
-                          >
-                            <Icon className="mr-2 h-4 w-4" />
-                            {cta.label}
-                          </a>
-                        );
-                      })}
+                          return (
+                            <a
+                              key={`${event.id}-${cta.label}`}
+                              href={cta.href}
+                              target={cta.href.startsWith("http") ? "_blank" : undefined}
+                              rel={cta.href.startsWith("http") ? "noreferrer" : undefined}
+                              onClick={(clickEvent) => clickEvent.stopPropagation()}
+                              className={cn(
+                                buttonVariants({
+                                  variant:
+                                    cta.variant === "secondary"
+                                      ? "outline"
+                                      : "default",
+                                  size: "lg",
+                                }),
+                                "min-w-[150px] sm:min-w-[160px]"
+                              )}
+                            >
+                              <Icon className="mr-2 h-4 w-4" />
+                              {cta.label}
+                            </a>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 ) : null}
