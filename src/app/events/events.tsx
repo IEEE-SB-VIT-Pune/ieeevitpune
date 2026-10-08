@@ -1,6 +1,10 @@
 import type { ComponentType } from "react";
 import { Ticket } from "lucide-react";
 
+import codeGif from "@/assets/images/events/eventPage_Animation/code.gif";
+import neuralGif from "@/assets/images/events/eventPage_Animation/neural.gif";
+import aiAgentsWorkshop from "@/assets/images/gallery/AI_Agents_workshop.jpeg";
+
 export type EventCTA = {
   label: string;
   href: string;
@@ -31,35 +35,38 @@ export const EVENTS = [
     time: "5:00 PM",
     venue: "Seminar Hall, E Building, VIT Pune",
     mode: "OFFLINE",
-    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80",
+    image: aiAgentsWorkshop.src,
     shortDescription:
       "An engaging speaker session on how artificial intelligence is shaping the future of technology and innovation.",
     description: (
       <div className="space-y-5">
         <p>
           Join IEEE Student Branch VIT Pune for an insightful speaker session
-          exploring how artificial intelligence is moving from research labs
-          into real-world products, careers, and everyday life.
+          exploring how artificial intelligence is moving from research and
+          experimentation into real-world products, careers, and everyday life.
         </p>
-        <p className="font-semibold text-foreground">
-          What you can expect
-        </p>
-        <ul className="list-disc space-y-2 pl-5">
-          <li>Practical perspectives on the evolving AI landscape.</li>
-          <li>Real-world examples of AI-driven innovation.</li>
-          <li>Career and learning pathways for students interested in AI.</li>
-        </ul>
+
+        <div>
+          <p className="mb-2 font-semibold text-foreground">What you can expect</p>
+          <ul className="list-disc space-y-2 pl-5">
+            <li>Practical perspectives on the evolving AI landscape.</li>
+            <li>Real-world examples of AI-driven innovation.</li>
+            <li>Career and learning pathways for students interested in AI.</li>
+          </ul>
+        </div>
+
         <p>
-          This session is designed to be interactive, practical, and useful for
+          The session is designed to be interactive, practical, and useful for
           students at every stage of their technical journey.
         </p>
-        <p className="font-semibold text-foreground">
-          About the Speaker
-        </p>
-        <p>
-          A technology professional and AI practitioner will share practical
-          lessons from building and working with modern AI systems.
-        </p>
+
+        <div>
+          <p className="mb-2 font-semibold text-foreground">About the Speaker</p>
+          <p>
+            A technology professional and AI practitioner will share practical
+            lessons from building and working with modern AI systems.
+          </p>
+        </div>
       </div>
     ),
     ctas: [
@@ -79,7 +86,7 @@ export const EVENTS = [
     time: "1:00 PM",
     venue: "VIT Pune",
     mode: "OFFLINE",
-    image: "/_next/static/media/neural.7c7b8c31.gif",
+    image: neuralGif.src,
     shortDescription:
       "An interactive tech talk covering core CS subjects, AI integration, and practical career skills.",
     description: (
@@ -105,7 +112,7 @@ export const EVENTS = [
     time: "Offline",
     venue: "VIT Pune",
     mode: "OFFLINE",
-    image: "/_next/static/media/code.9f7aee13.gif",
+    image: codeGif.src,
     shortDescription:
       "A high-octane competitive coding hackathon challenging logic, speed, and problem-solving across multiple divisions.",
     description: (
