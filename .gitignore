@@ -43,3 +43,6 @@ next-env.d.ts
 import_responses.ts
 Interview Response 4 Aug 848pm.xlsx
 Interview Slot.xlsx
+
+# IDE
+.vscode
