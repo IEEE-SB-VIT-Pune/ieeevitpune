@@ -109,7 +109,7 @@ export const UPCOMING_EVENTS = [
     ctas: [
       {
         label: "Book Tickets",
-        href: "https://example.com/book-tickets",
+        href: "https://vierp.in/",
         variant: "primary",
         icon: Ticket,
       },
