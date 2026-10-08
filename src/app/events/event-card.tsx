@@ -132,15 +132,16 @@ export function EventCard({ event }: EventCardProps) {
                 transition={{ duration: 0.25, ease: "easeOut" }}
                 className="relative max-h-[94vh] w-full max-w-4xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl sm:rounded-3xl"
               >
+                <button
+                  type="button"
+                  aria-label="Close event details"
+                  onClick={() => setActive(false)}
+                  className="absolute right-3 top-3 z-40 inline-flex h-10 w-10 items-center justify-center rounded-full border border-primary/40 bg-background/90 text-primary shadow-[0_0_18px_rgba(0,217,255,0.18)] backdrop-blur-md transition-all hover:border-primary hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-4 sm:top-4"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+
                 <div className="relative max-h-[94vh] overflow-y-auto overscroll-contain [scrollbar-color:rgba(0,217,255,0.42)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/35 [&::-webkit-scrollbar-thumb]:hover:bg-primary/60">
-                  <button
-                    type="button"
-                    aria-label="Close event details"
-                    onClick={() => setActive(false)}
-                    className="absolute right-3 top-3 z-30 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground backdrop-blur transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-4 sm:top-4"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
 
                   <motion.div
                     layoutId={`event-image-${layoutKey}`}
@@ -221,7 +222,7 @@ export function EventCard({ event }: EventCardProps) {
                 </div>
 
                 {event.ctas?.length ? (
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-end p-3 sm:p-5">
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-end p-3 sm:p-5">
                     <div className="pointer-events-auto relative">
                       <div className="absolute -inset-x-8 -bottom-4 -top-8 bg-gradient-to-t from-card via-card/90 to-transparent blur-xl" />
                       <div className="relative flex max-w-full flex-wrap justify-end gap-2 rounded-2xl  sm:rounded-full">
