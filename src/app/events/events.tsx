@@ -28,43 +28,80 @@ export type Event = {
 
 export const UPCOMING_EVENTS = [
   {
-    id: "future-of-ai",
-    title: "The Future of AI: From Ideas to Impact",
+    id: "lover-babar-speaker-session",
+    title: "An Evening of Insights with Lover Babar",
     category: "Speaker Session",
-    date: "20 October 2026",
-    time: "5:00 PM",
-    venue: "Seminar Hall, E Building, VIT Pune",
+    date: "21 October 2026",
+    time: "10:00 AM",
+    venue: "VIT BIB Auditorium",
     mode: "OFFLINE",
     image: aiAgentsWorkshop.src,
     shortDescription:
-      "An engaging speaker session on how artificial intelligence is shaping the future of technology and innovation.",
+      "Join IEEE Student Branch VIT Pune for an engaging speaker session with Lover Babar, featuring insights, experiences, and perspectives for today’s students.",
     description: (
-      <div className="space-y-5">
-        <p>
-          Join IEEE Student Branch VIT Pune for an insightful speaker session
-          exploring how artificial intelligence is moving from research and
-          experimentation into real-world products, careers, and everyday life.
-        </p>
+      <div className="space-y-6">
+        <div className="space-y-3">
+          <p>
+            IEEE Student Branch VIT Pune is excited to invite{" "}
+            <strong>Lover Babar</strong> for an engaging speaker session
+            designed especially for students.
+          </p>
+          <p>
+            The session is an opportunity to hear directly from our guest
+            speaker, explore fresh perspectives, ask questions, and take away
+            ideas that can be applied to academic, personal, and professional
+            growth.
+          </p>
+        </div>
 
         <div>
-          <p className="mb-2 font-semibold text-foreground">What you can expect</p>
-          <ul className="list-disc space-y-2 pl-5">
-            <li>Practical perspectives on the evolving AI landscape.</li>
-            <li>Real-world examples of AI-driven innovation.</li>
-            <li>Career and learning pathways for students interested in AI.</li>
+          <h3>What to Expect</h3>
+          <ul>
+            <li>
+              <strong>Insights & Perspectives:</strong> Hear practical ideas,
+              experiences, and perspectives from our guest speaker.
+            </li>
+            <li>
+              <strong>Interactive Session:</strong> Take part in a
+              student-focused discussion and engage with the speaker.
+            </li>
+            <li>
+              <strong>Connect & Learn:</strong> Meet fellow students, exchange
+              ideas, and make the most of the IEEE community experience.
+            </li>
           </ul>
         </div>
 
-        <p>
-          The session is designed to be interactive, practical, and useful for
-          students at every stage of their technical journey.
-        </p>
+        <div>
+          <h3>Goodies & Refreshments</h3>
+          <p>
+            Every registered participant will receive{" "}
+            <strong>exclusive goodies and refreshments</strong> as part of the
+            event experience.
+          </p>
+        </div>
 
         <div>
-          <p className="mb-2 font-semibold text-foreground">About the Speaker</p>
+          <h3>Event Details</h3>
           <p>
-            A technology professional and AI practitioner will share practical
-            lessons from building and working with modern AI systems.
+            <strong>Entry Fee:</strong> ₹200
+          </p>
+        </div>
+
+        <div>
+          <h3>Who Can Attend?</h3>
+          <p>
+            The session is open to students interested in learning, connecting,
+            and experiencing an engaging speaker interaction hosted by IEEE
+            Student Branch VIT Pune.
+          </p>
+        </div>
+
+        <div>
+          <h3>Reserve Your Spot</h3>
+          <p>
+            Seats are limited. Book your ticket and join us at the VIT BIB
+            Auditorium for an insightful session with Lover Babar.
           </p>
         </div>
       </div>
