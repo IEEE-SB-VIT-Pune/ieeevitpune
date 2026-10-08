@@ -3,10 +3,7 @@
 import { motion } from "motion/react";
 
 import { EventCard } from "./event-card";
-import { EVENTS } from "./events";
-
-const upcomingEvents = EVENTS.slice(0, 1);
-const previousEvents = EVENTS.slice(1);
+import { PREVIOUS_EVENTS, UPCOMING_EVENTS } from "./events";
 
 export default function EventsPage() {
   return (
@@ -50,7 +47,7 @@ export default function EventsPage() {
           </div>
 
           <div className="mx-auto w-full max-w-4xl">
-            {upcomingEvents.map((event) => (
+            {UPCOMING_EVENTS.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
@@ -72,7 +69,7 @@ export default function EventsPage() {
           </div>
 
           <div className="mx-auto grid w-full max-w-5xl gap-6 md:grid-cols-2">
-            {previousEvents.map((event, index) => (
+            {PREVIOUS_EVENTS.map((event, index) => (
               <motion.div
                 key={event.id}
                 initial={{ opacity: 0, y: 18 }}
