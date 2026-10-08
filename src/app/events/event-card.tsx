@@ -224,7 +224,7 @@ export function EventCard({ event }: EventCardProps) {
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-end p-3 sm:p-5">
                     <div className="pointer-events-auto relative">
                       <div className="absolute -inset-x-8 -bottom-4 -top-8 bg-gradient-to-t from-card via-card/90 to-transparent blur-xl" />
-                      <div className="relative flex max-w-full flex-wrap justify-end gap-2 rounded-2xl border border-border/80 bg-background/92 p-2 shadow-[0_10px_35px_rgba(0,0,0,0.45)] backdrop-blur-md sm:rounded-full">
+                      <div className="relative flex max-w-full flex-wrap justify-end gap-2 rounded-2xl  sm:rounded-full">
                         {event.ctas.map((cta) => {
                           const Icon = cta.icon;
 
