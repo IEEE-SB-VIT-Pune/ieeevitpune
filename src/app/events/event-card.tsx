@@ -129,35 +129,39 @@ export function EventCard({ event }: EventCardProps) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 18, scale: 0.98 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
-                className="relative flex max-h-[94vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl sm:rounded-3xl"
+                className="relative max-h-[94vh] w-full max-w-4xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl sm:rounded-3xl"
               >
-                <button
-                  type="button"
-                  aria-label="Close event details"
-                  onClick={() => setActive(false)}
-                  className="absolute right-3 top-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground backdrop-blur transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-4 sm:top-4"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+                <div className="max-h-[94vh] overflow-y-auto overscroll-contain scroll-pb-32">
+                  <button
+                    type="button"
+                    aria-label="Close event details"
+                    onClick={() => setActive(false)}
+                    className="absolute right-3 top-3 z-30 inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-background/80 text-foreground backdrop-blur transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-4 sm:top-4"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
 
-                <motion.div
-                  layoutId={`event-image-${layoutKey}`}
-                  className="relative aspect-[3/2] w-full shrink-0 overflow-hidden bg-muted/40 sm:max-h-[44vh]"
-                >
-                  {event.image ? (
-                    <Image
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      sizes="100vw"
-                      className="object-cover object-center"
-                    />
-                  ) : null}
-                </motion.div>
+                  <motion.div
+                    layoutId={`event-image-${layoutKey}`}
+                    className="relative aspect-[3/2] w-full overflow-hidden bg-muted/40"
+                  >
+                    {event.image ? (
+                      <Image
+                        src={event.image}
+                        alt={event.title}
+                        fill
+                        sizes="100vw"
+                        className="object-cover object-center"
+                      />
+                    ) : (
+                      <div className="grid h-full place-items-center text-sm font-medium text-muted-foreground">
+                        Event image coming soon
+                      </div>
+                    )}
+                  </motion.div>
 
-                <div className="flex min-h-0 flex-1 flex-col">
-                  <div className="shrink-0 space-y-4 border-b border-border/70 px-5 py-5 sm:px-7 sm:py-6">
-                    <div className="flex flex-wrap items-center gap-2 pr-10">
+                  <div className="space-y-4 border-b border-border/70 px-5 py-5 sm:px-7 sm:py-6">
+                    <div className="flex flex-wrap items-center gap-2 pr-12">
                       <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
                         {event.category}
                       </span>
@@ -208,14 +212,16 @@ export function EventCard({ event }: EventCardProps) {
                     </div>
                   </div>
 
-                  <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-7 sm:py-6">
+                  <div className="px-5 py-5 pb-32 sm:px-7 sm:py-6 sm:pb-36">
                     <div className="text-sm leading-7 text-muted-foreground sm:text-[15px] [&_a]:font-semibold [&_a]:text-primary [&_a]:underline-offset-4 [&_a]:hover:underline [&_blockquote]:border-l-2 [&_blockquote]:border-primary/50 [&_blockquote]:pl-4 [&_blockquote]:italic [&_h3]:mb-3 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-foreground [&_li]:leading-7 [&_p+p]:mt-4 [&_strong]:font-bold [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5">
                       {event.description}
                     </div>
                   </div>
+                </div>
 
-                  {event.ctas?.length ? (
-                    <div className="flex shrink-0 flex-wrap gap-3 border-t border-border/70 bg-card/95 px-5 py-4 backdrop-blur sm:px-7">
+                {event.ctas?.length ? (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-end p-4 sm:p-6">
+                    <div className="pointer-events-auto flex max-w-full flex-wrap justify-end gap-2 rounded-2xl border border-border/80 bg-background/90 p-2 shadow-xl backdrop-blur-md sm:rounded-full">
                       {event.ctas.map((cta) => {
                         const Icon = cta.icon;
 
@@ -234,7 +240,7 @@ export function EventCard({ event }: EventCardProps) {
                                     : "default",
                                 size: "lg",
                               }),
-                              "min-w-[150px] flex-1 sm:flex-none"
+                              "min-w-[150px] sm:min-w-[160px]"
                             )}
                           >
                             <Icon className="mr-2 h-4 w-4" />
@@ -243,8 +249,8 @@ export function EventCard({ event }: EventCardProps) {
                         );
                       })}
                     </div>
-                  ) : null}
-                </div>
+                  </div>
+                ) : null}
               </motion.div>
             </div>
           </>
