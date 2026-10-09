@@ -365,6 +365,15 @@ export default function RecruitmentPage() {
     }));
   };
 
+  return(
+    <div className="flex items-center justify-center flex-col min-h-[50vh] text-center text-wrap p-4">
+      <h1>
+        Recruitment
+      </h1>
+      <p className="text-xl" >There are no active recruitments</p>
+    </div>
+  )
+
   if (loading) {
     return (
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
@@ -425,6 +434,8 @@ export default function RecruitmentPage() {
       </div>
     );
   }
+
+  
 
   return (
     <div className="p-4 sm:p-6 relative z-10 max-w-4xl mx-auto min-h-[calc(100vh-4rem)] space-y-6">
