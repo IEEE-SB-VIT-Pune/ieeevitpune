@@ -134,32 +134,7 @@ export function EventCard({ event }: EventCardProps) {
           ) : null}
         </div>
 
-        <div className="flex justify-end items-center  space-y-3 p-5 sm:p-6">
-          {(event && event.ctas)&& event.ctas.map((cta) => {
-            const Icon = cta.icon;
-
-            return (
-              <a
-                key={`${event.id}-${cta.label}`}
-                href={cta.href}
-                target={cta.href.startsWith("http") ? "_blank" : undefined}
-                rel={cta.href.startsWith("http") ? "noreferrer" : undefined}
-                onClick={(clickEvent) => clickEvent.stopPropagation()}
-                className={cn(
-                  buttonVariants({
-                    variant:
-                      cta.variant === "secondary" ? "outline" : "default",
-                    size: "lg",
-                  }),
-                  "min-w-[150px] sm:min-w-[160px]",
-                )}
-              >
-                <Icon className="mr-2 h-4 w-4" />
-                {cta.label}
-              </a>
-            );
-          })}
-        </div>
+        
       </motion.article>
 
       <AnimatePresence>
