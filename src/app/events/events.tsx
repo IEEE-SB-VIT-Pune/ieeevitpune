@@ -3,7 +3,7 @@ import { Instagram, Ticket, Youtube } from "lucide-react";
 
 import codeGif from "@/assets/images/events/eventPage_Animation/code.gif";
 import neuralGif from "@/assets/images/events/eventPage_Animation/neural.gif";
-import aiAgentsWorkshop from "@/assets/images/gallery/AI_Agents_workshop.jpeg";
+import IeeeTechUncut from "@/assets/images/events/event_poster/IEEE_tech_uncut.jpeg";
 
 export type EventCTA = {
   label: string;
@@ -23,17 +23,35 @@ export type EventSpeaker = {
   }[];
 };
 
+export type EventScheduleItem = {
+  time: string;
+  title: string;
+  description?: string;
+};
+
+export type EventContact = {
+  role: string;
+  name: string;
+  phone: string;
+};
+
 export type Event = {
   id: string;
   title: string;
+  subtitle?: string;
   category: string;
+  badge?: string;
   date: string;
   time?: string;
   venue?: string;
   mode: "ONLINE" | "OFFLINE" | "HYBRID";
   image?: string;
+  posterOrientation?: "portrait" | "landscape";
   shortDescription: string;
   description: ReactNode;
+  highlights?: string[];
+  schedule?: EventScheduleItem[];
+  contacts?: EventContact[];
   speaker?: EventSpeaker;
   ctas?: EventCTA[];
 };
@@ -59,14 +77,61 @@ const LOVE_BABBAR: EventSpeaker = {
 export const UPCOMING_EVENTS = [
   {
     id: "ieee-day-2026",
-    title: "IEEE DAY",
+    title: "IEEE DAY 2026",
+    subtitle: "TECH PE CHARCHA with Love Babbar",
     category: "IEEE Day",
+    badge: "Flagship Keynote",
     date: "21 October",
     time: "12:00 PM – 3:15 PM",
-    venue:
-      "VIT Pune Bibwewadi Campus (Auditorium - Sharad Arena)",
+    venue: "VIT Pune Bibwewadi Campus (Auditorium - Sharad Arena)",
     mode: "OFFLINE",
-    image: aiAgentsWorkshop.src,
+    image: IeeeTechUncut.src,
+    posterOrientation: "portrait",
+    highlights: [
+      "Podcast-style dialogue on engineering careers, tech shifts & startup building",
+      "Actionable placement guidance, DSA preparation & industry perspective",
+      "Live interactive audience Q&A with Love Babbar",
+      "Network with passionate peers and IEEE Student Branch members",
+    ],
+    schedule: [
+      {
+        time: "12:00 PM – 12:30 PM",
+        title: "Auditorium Entry & Crowd Settlement",
+        description: "Sharad Arena entry opens for registered students.",
+      },
+      {
+        time: "12:30 PM – 1:00 PM",
+        title: "Formal Welcome & Lamp Lighting",
+        description: "Dignitary welcome, introduction of Mr. Love Babbar & opening activity.",
+      },
+      {
+        time: "1:00 PM – 2:30 PM",
+        title: "Podcast: Tech Pe Charcha with Love Babbar",
+        description: "Engaging fireside conversation on real-world tech and engineering careers.",
+      },
+      {
+        time: "2:30 PM – 2:45 PM",
+        title: "Live Audience Q&A",
+        description: "Direct interaction between attendees and the speaker.",
+      },
+      {
+        time: "2:45 PM – 3:15 PM",
+        title: "Felicitation & Escort",
+        description: "Token of appreciation and wrap-up.",
+      },
+    ],
+    contacts: [
+      {
+        role: "Vice Chairperson",
+        name: "Shalvi Maheshwari",
+        phone: "+91 8669881079",
+      },
+      {
+        role: "Curation Head",
+        name: "Saumya Dhorje",
+        phone: "+91 9529604447",
+      },
+    ],
     shortDescription:
       "TECH PE CHARCHA is an industry-focused IEEE DAY experience featuring a podcast-style conversation with Love Babbar, practical technology and career insights, and an interactive audience Q&A.",
     speaker: LOVE_BABBAR,
@@ -203,11 +268,13 @@ export const PREVIOUS_EVENTS = [
     id: "gate-smashers",
     title: "Gate Smashers — Varun Singla",
     category: "Tech Talk",
+    badge: "Archived Session",
     date: "13th March",
     time: "1:00 PM",
     venue: "VIT Pune",
     mode: "OFFLINE",
     image: neuralGif.src,
+    posterOrientation: "landscape",
     shortDescription:
       "An interactive tech talk covering core CS subjects, AI integration, and practical career skills.",
     description: (
@@ -229,11 +296,13 @@ export const PREVIOUS_EVENTS = [
     id: "codezest-26",
     title: "CodeZest'26",
     category: "Hackathon",
+    badge: "Competitive Hackathon",
     date: "13th March",
     time: "Offline",
     venue: "VIT Pune",
     mode: "OFFLINE",
     image: codeGif.src,
+    posterOrientation: "landscape",
     shortDescription:
       "A high-octane competitive coding hackathon challenging logic, speed, and problem-solving across multiple divisions.",
     description: (
