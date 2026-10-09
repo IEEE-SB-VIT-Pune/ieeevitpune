@@ -296,7 +296,7 @@ export default function AboutPage() {
             </div>
 
             {/* Recruitment CTA block */}
-            <div className="pt-8">
+            {/* <div className="pt-8">
               <div className="max-w-2xl mx-auto text-center border-4 border-stone-300 bg-card/50 p-8 rounded-2xl space-y-6 hover:scale-[1.02] transition-all">
                 <h3 className="text-2xl font-bold text-foreground">Execom 2026-2027</h3>
                 <div className="space-y-4">
@@ -315,7 +315,7 @@ export default function AboutPage() {
                   </Link>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
