@@ -101,6 +101,37 @@ export function EventCard({ event }: EventCardProps) {
           <p className="line-clamp-3 text-sm leading-6 text-muted-foreground sm:text-[15px]">
             {event.shortDescription}
           </p>
+
+          {event.ctas?.length ? (
+            <div className="flex flex-wrap gap-2 pt-1">
+              {event.ctas.map((cta) => {
+                const Icon = cta.icon;
+
+                return (
+                  <motion.a
+                    key={`${event.id}-${cta.label}`}
+                    layoutId={`event-cta-${layoutKey}-${cta.label}`}
+                    href={cta.href}
+                    target={cta.href.startsWith("http") ? "_blank" : undefined}
+                    rel={cta.href.startsWith("http") ? "noreferrer" : undefined}
+                    onClick={(clickEvent) => clickEvent.stopPropagation()}
+                    onKeyDown={(keyboardEvent) => keyboardEvent.stopPropagation()}
+                    className={cn(
+                      buttonVariants({
+                        variant:
+                          cta.variant === "secondary" ? "outline" : "default",
+                        size: "lg",
+                      }),
+                      "min-w-[150px] sm:min-w-[160px]"
+                    )}
+                  >
+                    <Icon className="mr-2 h-4 w-4" />
+                    {cta.label}
+                  </motion.a>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
       </motion.article>
 
@@ -268,8 +299,9 @@ export function EventCard({ event }: EventCardProps) {
                           const Icon = cta.icon;
 
                           return (
-                            <a
+                            <motion.a
                               key={`${event.id}-${cta.label}`}
+                              layoutId={`event-cta-${layoutKey}-${cta.label}`}
                               href={cta.href}
                               target={cta.href.startsWith("http") ? "_blank" : undefined}
                               rel={cta.href.startsWith("http") ? "noreferrer" : undefined}
@@ -287,7 +319,7 @@ export function EventCard({ event }: EventCardProps) {
                             >
                               <Icon className="mr-2 h-4 w-4" />
                               {cta.label}
-                            </a>
+                            </motion.a>
                           );
                         })}
                       </div>
