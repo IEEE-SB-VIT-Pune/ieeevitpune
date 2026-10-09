@@ -65,7 +65,7 @@ export function EventCard({ event }: EventCardProps) {
             setActive(true);
           }
         }}
-        className="group w-full cursor-pointer overflow-hidden rounded-2xl border border-border/80 bg-card/75 text-left shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_18px_50px_rgba(0,217,255,0.10)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="group flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/75 text-left shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_18px_50px_rgba(0,217,255,0.10)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
         <motion.div
           layoutId={`event-image-${layoutKey}`}
@@ -86,7 +86,7 @@ export function EventCard({ event }: EventCardProps) {
           )}
         </motion.div>
 
-        <div className="space-y-3 p-5 sm:p-6">
+        <div className="flex flex-1 flex-col space-y-3 p-5 sm:p-6">
           <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
             {event.category}
           </span>
@@ -103,7 +103,7 @@ export function EventCard({ event }: EventCardProps) {
           </p>
 
           {!active && event.ctas?.length ? (
-            <div className="flex flex-wrap justify-end gap-2 pt-1">
+            <div className="mt-auto flex flex-wrap justify-end gap-2 pt-4">
               {event.ctas.map((cta) => {
                 const Icon = cta.icon;
 
