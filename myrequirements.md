@@ -59,7 +59,7 @@ function EventPage() {
         {/* {loader && <Loader />} */}
         <div className="headerEvents">
           <img src={Evector} className="eventVector" alt="" />
-          <h1 className="eventHeading"> Event Highlights </h1>
+          <h1 className="eventHeading"> Event </h1>
         </div>
 
         {/* <div className="EbS">

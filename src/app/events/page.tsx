@@ -21,7 +21,7 @@ export default function EventsPage() {
             </p>
 
             <h1 className="text-4xl font-black sm:text-5xl md:text-6xl">
-              Event <span className="text-primary glow-text">Highlights</span>
+              Events
             </h1>
 
             <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
@@ -34,14 +34,14 @@ export default function EventsPage() {
 
       <section className="border-y border-border/50 bg-card/10 px-4 py-14 sm:py-16">
         <div className="container mx-auto">
-          <div className="mb-8">
+          <div className="mb-8 text-center">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
               What&apos;s next
             </p>
             <h2 className="mt-2 text-3xl sm:text-4xl">
               Upcoming <span className="text-primary">Events</span>
             </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+            <p className="mt-3 mx-auto max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
               Open an event to view the full details and available actions.
             </p>
           </div>

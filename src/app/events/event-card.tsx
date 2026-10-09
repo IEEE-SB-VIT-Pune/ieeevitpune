@@ -102,6 +102,33 @@ export function EventCard({ event }: EventCardProps) {
             {event.shortDescription}
           </p>
         </div>
+
+        <div className="flex justify-end items-center  space-y-3 p-5 sm:p-6">
+          {(event && event.ctas)&& event.ctas.map((cta) => {
+            const Icon = cta.icon;
+
+            return (
+              <a
+                key={`${event.id}-${cta.label}`}
+                href={cta.href}
+                target={cta.href.startsWith("http") ? "_blank" : undefined}
+                rel={cta.href.startsWith("http") ? "noreferrer" : undefined}
+                onClick={(clickEvent) => clickEvent.stopPropagation()}
+                className={cn(
+                  buttonVariants({
+                    variant:
+                      cta.variant === "secondary" ? "outline" : "default",
+                    size: "lg",
+                  }),
+                  "min-w-[150px] sm:min-w-[160px]",
+                )}
+              >
+                <Icon className="mr-2 h-4 w-4" />
+                {cta.label}
+              </a>
+            );
+          })}
+        </div>
       </motion.article>
 
       <AnimatePresence>
@@ -239,7 +266,9 @@ export function EventCard({ event }: EventCardProps) {
                                 href={link.href}
                                 target="_blank"
                                 rel="noreferrer"
-                                onClick={(clickEvent) => clickEvent.stopPropagation()}
+                                onClick={(clickEvent) =>
+                                  clickEvent.stopPropagation()
+                                }
                                 className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/60 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
                               >
                                 <Icon className="h-4 w-4" />
@@ -271,9 +300,19 @@ export function EventCard({ event }: EventCardProps) {
                             <a
                               key={`${event.id}-${cta.label}`}
                               href={cta.href}
-                              target={cta.href.startsWith("http") ? "_blank" : undefined}
-                              rel={cta.href.startsWith("http") ? "noreferrer" : undefined}
-                              onClick={(clickEvent) => clickEvent.stopPropagation()}
+                              target={
+                                cta.href.startsWith("http")
+                                  ? "_blank"
+                                  : undefined
+                              }
+                              rel={
+                                cta.href.startsWith("http")
+                                  ? "noreferrer"
+                                  : undefined
+                              }
+                              onClick={(clickEvent) =>
+                                clickEvent.stopPropagation()
+                              }
                               className={cn(
                                 buttonVariants({
                                   variant:
@@ -282,7 +321,7 @@ export function EventCard({ event }: EventCardProps) {
                                       : "default",
                                   size: "lg",
                                 }),
-                                "min-w-[150px] sm:min-w-[160px]"
+                                "min-w-[150px] sm:min-w-[160px]",
                               )}
                             >
                               <Icon className="mr-2 h-4 w-4" />
