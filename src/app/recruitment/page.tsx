@@ -365,14 +365,17 @@ export default function RecruitmentPage() {
     }));
   };
 
-  return(
-    <div className="flex items-center justify-center flex-col min-h-[50vh] text-center text-wrap p-4">
-      <h1>
-        Recruitment
-      </h1>
-      <p className="text-xl" >There are no active recruitments</p>
-    </div>
-  )
+  const isRecruitmentActive: boolean = false;
+  if (!isRecruitmentActive) {
+    return (
+      <div className="flex items-center justify-center flex-col min-h-[50vh] text-center text-wrap p-4">
+        <h1>
+          Recruitment
+        </h1>
+        <p className="text-xl">There are no active recruitments</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
