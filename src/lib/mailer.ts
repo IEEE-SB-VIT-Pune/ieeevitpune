@@ -52,23 +52,23 @@ export async function sendMail(options: SendEmailOptions): Promise<SendEmailResu
       message: "Email dispatched successfully.",
       isMock,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown mail error";
+    // Never log email body — it may contain OTP codes or temporary passwords
     console.log("------------------------------------------");
-    console.log(`[SMTP Notice] Email log for ${options.to}:`);
+    console.log(`[SMTP Notice] Failed to send email to ${options.to}`);
     console.log(`Subject: ${options.subject}`);
-    console.log(`Text: ${options.text}`);
-    console.log(`Error: ${error?.message || error}`);
+    console.log(`Error: ${message}`);
     console.log("------------------------------------------");
 
     if (!isMock) {
       return {
         success: false,
-        message: `Failed to send email: ${error?.message || error}`,
+        message: "Failed to send email",
         isMock: false,
       };
     }
 
-    // In mock/development mode, don't break execution if real SMTP fails
     return {
       success: true,
       message: "Email processed in mock mode. Check server logs.",

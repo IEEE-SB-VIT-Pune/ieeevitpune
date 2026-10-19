@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import connectDB from "@/lib/db";
 import { User } from "@/models/User";
+import { OTP_MAX_ATTEMPTS, verifyOtpHash } from "@/lib/otp";
 
 const resetPasswordSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -25,43 +26,67 @@ export async function POST(request: Request) {
     const { email, otp, newPassword } = validation.data;
     await connectDB();
 
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    const user = await User.findOne({ email: email.toLowerCase().trim() }).select(
+      "+password +resetPasswordOtp +resetPasswordOtpExpires +resetPasswordOtpAttempts"
+    );
 
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User account not found" },
-        { status: 404 }
-      );
-    }
-
-    // Verify OTP code & expiration
-    if (!user.resetPasswordOtp || user.resetPasswordOtp !== otp.trim()) {
-      return NextResponse.json(
-        { success: false, message: "Invalid OTP code. Please check and try again." },
+        { success: false, message: "Invalid or expired OTP code." },
         { status: 400 }
       );
     }
 
-    if (!user.resetPasswordOtpExpires || new Date() > new Date(user.resetPasswordOtpExpires)) {
+    if (!user.resetPasswordOtp || !user.resetPasswordOtpExpires) {
+      return NextResponse.json(
+        { success: false, message: "Invalid or expired OTP code." },
+        { status: 400 }
+      );
+    }
+
+    if (new Date() > new Date(user.resetPasswordOtpExpires)) {
+      user.resetPasswordOtp = null;
+      user.resetPasswordOtpExpires = null;
+      user.resetPasswordOtpAttempts = 0;
+      await user.save();
       return NextResponse.json(
         { success: false, message: "OTP code has expired. Please request a new code." },
         { status: 400 }
       );
     }
 
-    // Set new password (pre-save hook in User model will hash this automatically)
+    if ((user.resetPasswordOtpAttempts || 0) >= OTP_MAX_ATTEMPTS) {
+      user.resetPasswordOtp = null;
+      user.resetPasswordOtpExpires = null;
+      user.resetPasswordOtpAttempts = 0;
+      await user.save();
+      return NextResponse.json(
+        { success: false, message: "Too many invalid attempts. Please request a new OTP code." },
+        { status: 429 }
+      );
+    }
+
+    if (!verifyOtpHash(otp, user.resetPasswordOtp)) {
+      user.resetPasswordOtpAttempts = (user.resetPasswordOtpAttempts || 0) + 1;
+      await user.save();
+      return NextResponse.json(
+        { success: false, message: "Invalid or expired OTP code." },
+        { status: 400 }
+      );
+    }
+
     user.password = newPassword;
     user.resetPasswordOtp = null;
     user.resetPasswordOtpExpires = null;
+    user.resetPasswordOtpAttempts = 0;
+    user.resetPasswordOtpLastSentAt = null;
     await user.save();
-
-    console.log(`[Password Reset Success] Password updated for ${user.email}`);
 
     return NextResponse.json({
       success: true,
       message: "Your password has been reset successfully. You can now log in with your new password.",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("POST /api/auth/reset-password error:", error);
     return NextResponse.json(
       { success: false, message: "An internal server error occurred" },

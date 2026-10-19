@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { z } from "zod";
 import connectDB from "@/lib/db";
 import { User } from "@/models/User";
-import { verifyJWT } from "@/lib/jwt";
+import { getSessionUser } from "@/lib/session";
+import { OTP_MAX_ATTEMPTS, verifyOtpHash } from "@/lib/otp";
 
 const verifyOtpSchema = z.object({
   otp: z.string().length(6, "OTP must be exactly 6 digits"),
@@ -11,15 +11,12 @@ const verifyOtpSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    if (!token) {
-      return NextResponse.json({ success: false, message: "Unauthorized: Please log in first" }, { status: 401 });
-    }
-
-    const payload = await verifyJWT(token);
-    if (!payload || !payload.id) {
-      return NextResponse.json({ success: false, message: "Unauthorized: Invalid session" }, { status: 401 });
+    const session = await getSessionUser();
+    if (!session) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized: Please log in first" },
+        { status: 401 }
+      );
     }
 
     const body = await request.json();
@@ -31,33 +28,73 @@ export async function POST(request: Request) {
     const { otp } = validation.data;
 
     await connectDB();
-    const user = await User.findById(payload.id);
+    const user = await User.findById(session.id).select(
+      "+emailVerificationOtp +emailVerificationOtpExpires +emailVerificationOtpAttempts"
+    );
     if (!user) {
       return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
     }
 
     if (user.isEmailVerified) {
-      return NextResponse.json({ success: true, message: "Email is already verified", isVerified: true });
+      return NextResponse.json({
+        success: true,
+        message: "Email is already verified",
+        isVerified: true,
+      });
     }
 
     if (!user.emailVerificationOtp || !user.emailVerificationOtpExpires) {
-      return NextResponse.json({ success: false, message: "No active verification requests found. Please request a new OTP code." }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "No active verification requests found. Please request a new OTP code.",
+        },
+        { status: 400 }
+      );
     }
 
-    // Check expiry
     if (new Date() > new Date(user.emailVerificationOtpExpires)) {
-      return NextResponse.json({ success: false, message: "Verification OTP code has expired. Please request a new code." }, { status: 400 });
+      user.emailVerificationOtp = null;
+      user.emailVerificationOtpExpires = null;
+      user.emailVerificationOtpAttempts = 0;
+      await user.save();
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Verification OTP code has expired. Please request a new code.",
+        },
+        { status: 400 }
+      );
     }
 
-    // Verify code
-    if (user.emailVerificationOtp !== otp) {
-      return NextResponse.json({ success: false, message: "Incorrect OTP code. Please try again." }, { status: 400 });
+    if ((user.emailVerificationOtpAttempts || 0) >= OTP_MAX_ATTEMPTS) {
+      user.emailVerificationOtp = null;
+      user.emailVerificationOtpExpires = null;
+      user.emailVerificationOtpAttempts = 0;
+      await user.save();
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Too many invalid attempts. Please request a new OTP code.",
+        },
+        { status: 429 }
+      );
     }
 
-    // Set verified
+    if (!verifyOtpHash(otp, user.emailVerificationOtp)) {
+      user.emailVerificationOtpAttempts = (user.emailVerificationOtpAttempts || 0) + 1;
+      await user.save();
+      return NextResponse.json(
+        { success: false, message: "Incorrect OTP code. Please try again." },
+        { status: 400 }
+      );
+    }
+
     user.isEmailVerified = true;
     user.emailVerificationOtp = null;
     user.emailVerificationOtpExpires = null;
+    user.emailVerificationOtpAttempts = 0;
+    user.emailVerificationOtpLastSentAt = null;
     await user.save();
 
     return NextResponse.json({
@@ -65,8 +102,11 @@ export async function POST(request: Request) {
       message: "Email address verified successfully!",
       isVerified: true,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("POST /api/recruitment/otp/verify error:", error);
-    return NextResponse.json({ success: false, message: "An internal server error occurred" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "An internal server error occurred" },
+      { status: 500 }
+    );
   }
 }

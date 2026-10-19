@@ -157,7 +157,14 @@ export default function AdminUsersPage() {
 
       const data = await res.json();
       if (data.success) {
-        setModalSuccess(data);
+        // Keep a local copy of the password the admin set (API no longer returns secrets)
+        setModalSuccess({
+          ...data,
+          newPassword:
+            actionType === "set_password" && newPassword.trim().length >= 8
+              ? newPassword.trim()
+              : undefined,
+        });
       } else {
         setModalError(data.message || "Failed to update password.");
       }
@@ -399,21 +406,10 @@ export default function AdminUsersPage() {
                 </div>
               )}
 
-              {modalSuccess.otpCode && (
-                <div className="bg-background/80 p-2.5 rounded border border-border flex items-center justify-between">
-                  <div>
-                    <p className="text-[10px] text-muted-foreground uppercase font-bold">OTP Code Dispatched:</p>
-                    <code className="text-sm font-mono font-bold text-primary">{modalSuccess.otpCode}</code>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleCopyText(modalSuccess.otpCode)}
-                    className="h-7 text-[11px] gap-1"
-                  >
-                    {copied ? <Check className="h-3 w-3 text-green-400" /> : "Copy"}
-                  </Button>
-                </div>
+              {actionType === "send_otp" && (
+                <p className="text-muted-foreground">
+                  The OTP was emailed to the user and is not shown here.
+                </p>
               )}
             </div>
           )}
