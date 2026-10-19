@@ -20,7 +20,6 @@ export async function GET() {
       maxStudents: slot.maxStudents,
       availableSpots: slot.maxStudents - slot.students.length,
       isFull: slot.students.length >= slot.maxStudents,
-      googleEventId: slot.googleEventId,
       studentsCount: slot.students.length,
     }));
 

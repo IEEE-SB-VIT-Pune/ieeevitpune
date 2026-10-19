@@ -1,26 +1,12 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import connectDB from "@/lib/db";
-import { User } from "@/models/User";
 import { Slot } from "@/models/Slot";
 import { Interview } from "@/models/Interview";
-import { verifyJWT } from "@/lib/jwt";
+import { getAdminSessionUser } from "@/lib/session";
 import { logBookingToGoogleSheet } from "@/lib/google";
 
 async function verifyAdmin() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-  if (!token) return null;
-
-  const payload = await verifyJWT(token);
-  if (!payload || !payload.id) return null;
-
-  await connectDB();
-  const user = await User.findById(payload.id);
-  if (!user || user.status !== "ACTIVE" || user.role !== "ADMIN") {
-    return null;
-  }
-  return user;
+  return getAdminSessionUser();
 }
 
 // GET available active slots with remaining capacity

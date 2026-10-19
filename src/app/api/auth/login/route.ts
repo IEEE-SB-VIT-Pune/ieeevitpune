@@ -36,15 +36,8 @@ export async function POST(request: Request) {
       );
     }
 
-    if (user.status !== "ACTIVE") {
-      return NextResponse.json(
-        { success: false, message: "Your account is inactive. Please contact the administrator." },
-        { status: 403 }
-      );
-    }
-
-    // 3. Verify Password
-    const isMatch = await user.comparePassword(password);
+    // 3. Verify Password (same message for inactive / wrong password to reduce enumeration)
+    const isMatch = user.status === "ACTIVE" && (await user.comparePassword(password));
     if (!isMatch) {
       return NextResponse.json(
         { success: false, message: "Invalid email or password" },

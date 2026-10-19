@@ -3,11 +3,12 @@ import { z } from "zod";
 import connectDB from "@/lib/db";
 import { User } from "@/models/User";
 import { OTP_MAX_ATTEMPTS, verifyOtpHash } from "@/lib/otp";
+import { passwordSchema } from "@/lib/password";
 
 const resetPasswordSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   otp: z.string().length(6, "OTP code must be 6 digits"),
-  newPassword: z.string().min(8, "Password must be at least 8 characters"),
+  newPassword: passwordSchema,
 });
 
 export async function POST(request: Request) {

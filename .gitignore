@@ -46,3 +46,9 @@ Interview Slot.xlsx
 
 # IDE
 .vscode
+
+# Local datasets that may contain applicant PII — never commit
+**/interview_analytics_data.json
+*.xlsx
+Interview Response*.xlsx
+Interview Slot*.xlsx

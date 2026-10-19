@@ -5,10 +5,11 @@ import connectDB from "@/lib/db";
 import { User } from "@/models/User";
 import { getDefaultJwtExpiry, signJWT } from "@/lib/jwt";
 import { getSessionUser } from "@/lib/session";
+import { passwordSchema } from "@/lib/password";
 
 const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
-  newPassword: z.string().min(8, "New password must be at least 8 characters"),
+  newPassword: passwordSchema,
 });
 
 export async function POST(request: Request) {

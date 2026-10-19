@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { z } from "zod";
 import connectDB from "@/lib/db";
-import { User } from "@/models/User";
 import { Interview } from "@/models/Interview";
 import { Slot } from "@/models/Slot";
-import { verifyJWT } from "@/lib/jwt";
+import { getSessionUser } from "@/lib/session";
 import { SystemConfig } from "@/models/SystemConfig";
 import {
   createGoogleCalendarEvent,
@@ -20,15 +18,9 @@ const bookSlotSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    if (!token) {
+    const session = await getSessionUser();
+    if (!session) {
       return NextResponse.json({ success: false, message: "Unauthorized: Please log in first" }, { status: 401 });
-    }
-
-    const payload = await verifyJWT(token);
-    if (!payload || !payload.id) {
-      return NextResponse.json({ success: false, message: "Unauthorized: Invalid session" }, { status: 401 });
     }
 
     const tokenStatus = await checkGoogleTokenStatus();
@@ -65,10 +57,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: "Slot booking is currently closed." }, { status: 400 });
     }
 
-    const user = await User.findById(payload.id);
-    if (!user) {
-      return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
-    }
+    const user = session.doc;
 
     // Check application status
     if (!user.hasSubmittedInterview) {

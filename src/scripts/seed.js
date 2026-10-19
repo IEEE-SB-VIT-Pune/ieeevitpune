@@ -31,7 +31,8 @@ function loadEnv(filePath) {
 loadEnv(envPath);
 
 const mongodbUri = process.env.MONGODB_URI || "mongodb://localhost:27017/clubcms";
-console.log("Connecting to MongoDB URI:", mongodbUri);
+// Avoid logging the full URI — it often embeds database credentials
+console.log("Connecting to MongoDB...");
 
 // 2. Connect to MongoDB
 mongoose.connect(mongodbUri, {

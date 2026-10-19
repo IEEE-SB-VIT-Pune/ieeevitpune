@@ -142,6 +142,17 @@ export default function AdminUsersPage() {
       return;
     }
 
+    // Always set the password in the browser so the API never needs to return secrets
+    let passwordToSet = newPassword.trim();
+    if (actionType === "set_password" && passwordToSet.length < 8) {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+      passwordToSet = "Ieee#";
+      for (let i = 0; i < 6; i++) {
+        passwordToSet += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      setNewPassword(passwordToSet);
+    }
+
     try {
       const res = await fetch("/api/admin/users/reset-password", {
         method: "POST",
@@ -150,20 +161,16 @@ export default function AdminUsersPage() {
           userId: selectedUser ? selectedUser._id : undefined,
           email: targetEmail,
           action: actionType,
-          newPassword: actionType === "set_password" ? newPassword : undefined,
+          newPassword: actionType === "set_password" ? passwordToSet : undefined,
           notifyUser,
         }),
       });
 
       const data = await res.json();
       if (data.success) {
-        // Keep a local copy of the password the admin set (API no longer returns secrets)
         setModalSuccess({
           ...data,
-          newPassword:
-            actionType === "set_password" && newPassword.trim().length >= 8
-              ? newPassword.trim()
-              : undefined,
+          newPassword: actionType === "set_password" ? passwordToSet : undefined,
         });
       } else {
         setModalError(data.message || "Failed to update password.");

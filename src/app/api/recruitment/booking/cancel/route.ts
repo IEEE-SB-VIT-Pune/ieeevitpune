@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import connectDB from "@/lib/db";
 import { Slot } from "@/models/Slot";
-import { verifyJWT } from "@/lib/jwt";
+import { getSessionUser } from "@/lib/session";
 import { SystemConfig } from "@/models/SystemConfig";
 import {
   updateGoogleCalendarEvent,
@@ -12,15 +11,9 @@ import {
 
 export async function POST() {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    if (!token) {
+    const session = await getSessionUser();
+    if (!session) {
       return NextResponse.json({ success: false, message: "Unauthorized: Please log in first" }, { status: 401 });
-    }
-
-    const payload = await verifyJWT(token);
-    if (!payload || !payload.id) {
-      return NextResponse.json({ success: false, message: "Unauthorized: Invalid session" }, { status: 401 });
     }
 
     await connectDB();
@@ -42,7 +35,7 @@ export async function POST() {
     }
 
     const slot = await Slot.findOne({
-      "students.studentId": payload.id,
+      "students.studentId": session.id,
       isActive: true,
     });
 
@@ -51,11 +44,11 @@ export async function POST() {
     }
 
     // Filter out user
-    const studentBooking = slot.students.find((s: any) => s.studentId.toString() === payload.id);
+    const studentBooking = slot.students.find((s: any) => s.studentId.toString() === session.id);
     const emailToLog = studentBooking ? studentBooking.studentEmail : "";
     const eventIdToLog = slot.googleEventId; // Store before resetting!
     
-    slot.students = slot.students.filter((s: any) => s.studentId.toString() !== payload.id);
+    slot.students = slot.students.filter((s: any) => s.studentId.toString() !== session.id);
 
     // Google Calendar Sync
     try {

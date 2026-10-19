@@ -1,30 +1,9 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import fs from "fs";
-import path from "path";
 import connectDB from "@/lib/db";
 import { User } from "@/models/User";
 import { Slot } from "@/models/Slot";
 import { Interview } from "@/models/Interview";
-import { verifyJWT } from "@/lib/jwt";
-
-async function verifyAdmin() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-  if (!token) return null;
-
-  const payload = await verifyJWT(token);
-  if (!payload || !payload.id) return null;
-
-  await connectDB();
-  const currentUser = await User.findById(payload.id);
-  if (!currentUser || currentUser.status !== "ACTIVE" || currentUser.role !== "ADMIN") {
-    return null;
-  }
-  return currentUser;
-}
-
-const DATA_JSON_PATH = path.join(process.cwd(), "src", "lib", "interview_analytics_data.json");
+import { getAdminSessionUser } from "@/lib/session";
 
 function formatDateStr(dateObj: Date): string {
   const d = dateObj.getDate();
@@ -49,7 +28,7 @@ function formatTimeRange(startObj: Date, endObj: Date): string {
 
 export async function GET() {
   try {
-    const admin = await verifyAdmin();
+    const admin = await getAdminSessionUser();
     if (!admin) {
       return NextResponse.json(
         { success: false, message: "Forbidden: Administrator access required" },
@@ -223,18 +202,6 @@ export async function GET() {
       });
     }
 
-    // Fallback to static file if MongoDB yields no records yet
-    if (fs.existsSync(DATA_JSON_PATH)) {
-      const rawData = fs.readFileSync(DATA_JSON_PATH, "utf-8");
-      const parsedData = JSON.parse(rawData);
-      return NextResponse.json({
-        success: true,
-        source: "DATASET_FILE",
-        stats: parsedData.stats,
-        candidates: parsedData.candidates,
-      });
-    }
-
     return NextResponse.json({
       success: true,
       source: "EMPTY",
@@ -255,7 +222,7 @@ export async function GET() {
       },
       candidates: [],
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("GET /api/admin/interview-analytics error:", error);
     return NextResponse.json(
       { success: false, message: "An internal server error occurred" },

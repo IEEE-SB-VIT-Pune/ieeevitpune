@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import connectDB from "@/lib/db";
 import { User } from "@/models/User";
+import { passwordSchema } from "@/lib/password";
 
 const registerSchema = z.object({
-  name: z.string().min(1, "Name is required").trim(),
+  name: z.string().min(1, "Name is required").trim().max(100),
   email: z.string().min(1, "Email is required").email("Invalid email address").lowercase().trim(),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: passwordSchema,
 });
 
 export async function POST(request: Request) {
@@ -27,8 +28,9 @@ export async function POST(request: Request) {
     // Check email availability
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      // Same status as other validation failures to reduce account enumeration
       return NextResponse.json(
-        { success: false, message: "An account with this email address already exists" },
+        { success: false, message: "Unable to create account with the provided details" },
         { status: 400 }
       );
     }

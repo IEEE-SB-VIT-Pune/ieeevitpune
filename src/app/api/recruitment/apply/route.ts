@@ -1,39 +1,31 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { z } from "zod";
 import connectDB from "@/lib/db";
-import { User } from "@/models/User";
 import { Interview } from "@/models/Interview";
-import { verifyJWT } from "@/lib/jwt";
+import { getSessionUser } from "@/lib/session";
 import { logResponseToGoogleSheet, checkGoogleTokenStatus } from "@/lib/google";
 import { SystemConfig } from "@/models/SystemConfig";
 
 const recruitmentFormSchema = z.object({
-  fullname: z.string().min(1, "Name is required").trim(),
-  phone_number: z.string().min(10, "WhatsApp number must be at least 10 digits").trim(),
-  branch: z.string().min(1, "Branch selection is required"),
-  whyPart: z.string().min(1, "Motivation field is required").trim(),
-  domain: z.array(z.string()).min(1, "Select at least one domain preference"),
-  whyWork: z.string().min(1, "Required field").trim(),
-  skills: z.string().min(1, "Skills lists are required").trim(),
-  projects: z.string().optional().default(""),
-  expectations: z.string().optional().default(""),
-  vagera: z.string().optional().default(""),
-  github: z.string().optional().default(""),
-  linkedin: z.string().optional().default(""),
+  fullname: z.string().min(1, "Name is required").trim().max(120),
+  phone_number: z.string().min(10, "WhatsApp number must be at least 10 digits").trim().max(20),
+  branch: z.string().min(1, "Branch selection is required").max(80),
+  whyPart: z.string().min(1, "Motivation field is required").trim().max(4000),
+  domain: z.array(z.string().max(80)).min(1, "Select at least one domain preference").max(12),
+  whyWork: z.string().min(1, "Required field").trim().max(4000),
+  skills: z.string().min(1, "Skills lists are required").trim().max(4000),
+  projects: z.string().max(8000).optional().default(""),
+  expectations: z.string().max(4000).optional().default(""),
+  vagera: z.string().max(4000).optional().default(""),
+  github: z.string().max(300).optional().default(""),
+  linkedin: z.string().max(300).optional().default(""),
 });
 
 export async function POST(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    if (!token) {
+    const session = await getSessionUser();
+    if (!session) {
       return NextResponse.json({ success: false, message: "Unauthorized: Please log in first" }, { status: 401 });
-    }
-
-    const payload = await verifyJWT(token);
-    if (!payload || !payload.id) {
-      return NextResponse.json({ success: false, message: "Unauthorized: Invalid session" }, { status: 401 });
     }
 
     const tokenStatus = await checkGoogleTokenStatus();
@@ -45,10 +37,7 @@ export async function POST(request: Request) {
     }
 
     await connectDB();
-    const user = await User.findById(payload.id);
-    if (!user) {
-      return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
-    }
+    const user = session.doc;
 
     // Must be a USER and verified
     if (user.role !== "USER") {

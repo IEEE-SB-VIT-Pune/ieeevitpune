@@ -1,7 +1,5 @@
 import { google } from "googleapis";
 import { v4 as uuidv4 } from "uuid";
-import fs from "fs";
-import path from "path";
 import nodemailer from "nodemailer";
 import connectDB from "@/lib/db";
 import { SystemConfig } from "@/models/SystemConfig";
@@ -9,24 +7,6 @@ import { SystemConfig } from "@/models/SystemConfig";
 let oAuth2Client: any = null;
 let calendar: any = null;
 let sheets: any = null;
-
-async function updateEnvFile(key: string, value: string) {
-  try {
-    const envPath = path.join(process.cwd(), ".env.local");
-    if (!fs.existsSync(envPath)) return;
-    let content = fs.readFileSync(envPath, "utf-8");
-    const regex = new RegExp(`^${key}=.*$`, "m");
-    if (regex.test(content)) {
-      content = content.replace(regex, `${key}=${value}`);
-    } else {
-      content += `\n${key}=${value}`;
-    }
-    fs.writeFileSync(envPath, content, "utf-8");
-    console.log(`📝 [Google Auth] Updated ${key} in .env.local silently.`);
-  } catch (err: any) {
-    console.error(`[Google Auth] Error updating env file for ${key}:`, err.message);
-  }
-}
 
 try {
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -44,9 +24,9 @@ try {
 
     oAuth2Client.on("tokens", async (tokens: any) => {
       if (tokens.refresh_token) {
-        console.log("🔄 [Google Auth] Received a new refresh token silently!");
+        // Keep in-memory only — never write secrets back to disk from the running app
+        console.log("🔄 [Google Auth] Received a new refresh token (in-memory only). Update .env.local manually if needed.");
         process.env.GOOGLE_REFRESH_TOKEN = tokens.refresh_token;
-        await updateEnvFile("GOOGLE_REFRESH_TOKEN", tokens.refresh_token);
       }
       if (tokens.access_token) {
         console.log("🔑 [Google Auth] Access token refreshed silently.");
@@ -328,7 +308,7 @@ export async function logCancellationToGoogleSheet(studentEmail: string, googleE
 
 // Initialize response sheet headers
 export async function initializeResponseSheetHeaders() {
-  const spreadsheetId = process.env.GOOGLE_RESPONSE_SHEET_ID || "1Ja3HgEPv-IPvbPuUoZjlW9OwviskPXmvxC6VnGObQkk";
+  const spreadsheetId = process.env.GOOGLE_RESPONSE_SHEET_ID;
   if (!sheets || !spreadsheetId) return;
 
   try {
@@ -370,7 +350,7 @@ export async function logResponseToGoogleSheet(application: {
   expectations?: string;
   vagera?: string;
 }) {
-  const spreadsheetId = process.env.GOOGLE_RESPONSE_SHEET_ID || "1Ja3HgEPv-IPvbPuUoZjlW9OwviskPXmvxC6VnGObQkk";
+  const spreadsheetId = process.env.GOOGLE_RESPONSE_SHEET_ID;
   if (!sheets || !spreadsheetId) {
     console.warn("📊 [Google Sheets Sync] Response sync skipped: Client not initialized or GOOGLE_RESPONSE_SHEET_ID missing.");
     return;
