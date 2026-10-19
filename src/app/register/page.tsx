@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Eye, EyeOff, Lock, Mail, User, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 
 import ieeeLogo from "@/assets/images/footer/IEEE_logo2.png";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { registerUser } from "@/services/auth";
+import { getSafeRedirectPath } from "@/lib/safe-redirect";
 
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required").trim(),
@@ -28,13 +29,14 @@ const registerSchema = z.object({
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [apiSuccess, setApiSuccess] = useState<string | null>(null);
+  const safeFrom = getSafeRedirectPath(searchParams.get("from"), "");
 
   const {
     register,
@@ -63,8 +65,7 @@ export default function RegisterPage() {
 
       if (response.success) {
         setApiSuccess("Account created successfully! Redirecting you to login...");
-        const from = searchParams.get("from") || "";
-        const redirectUrl = `/login?email=${encodeURIComponent(values.email)}${from ? `&from=${encodeURIComponent(from)}` : ""}`;
+        const redirectUrl = `/login?email=${encodeURIComponent(values.email)}${safeFrom ? `&from=${encodeURIComponent(safeFrom)}` : ""}`;
         setTimeout(() => {
           router.push(redirectUrl);
         }, 2000);
@@ -227,7 +228,7 @@ export default function RegisterPage() {
         <CardFooter className="flex flex-col text-center justify-center gap-3.5 border-t border-border/40 pt-4">
           <p className="text-xs text-muted-foreground">
             Already have an account?{" "}
-            <Link href={`/login${searchParams.get("from") ? `?from=${encodeURIComponent(searchParams.get("from")!)}` : ""}`} className="text-primary hover:underline font-semibold">
+            <Link href={`/login${safeFrom ? `?from=${encodeURIComponent(safeFrom)}` : ""}`} className="text-primary hover:underline font-semibold">
               Sign In
             </Link>
           </p>
@@ -237,5 +238,13 @@ export default function RegisterPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-muted-foreground">Loading...</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }

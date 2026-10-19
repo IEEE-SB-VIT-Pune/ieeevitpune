@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Eye, EyeOff, Lock, Mail, Loader2, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
 
 import ieeeLogo from "@/assets/images/footer/IEEE_logo2.png";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { loginUser } from "@/services/auth";
+import { getSafeRedirectPath } from "@/lib/safe-redirect";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -25,7 +26,7 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
@@ -59,8 +60,8 @@ export default function LoginPage() {
     try {
       const response = await loginUser(values);
       if (response.success) {
-        // Redirect to dashboard on successful login
-        const from = searchParams.get("from") || (response.user?.role === "ADMIN" ? "/dashboard" : "/recruitment");
+        const fallback = response.user?.role === "ADMIN" ? "/dashboard" : "/recruitment";
+        const from = getSafeRedirectPath(searchParams.get("from"), fallback);
         router.push(from);
         router.refresh();
       } else {
@@ -72,6 +73,8 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  const safeFrom = getSafeRedirectPath(searchParams.get("from"), "");
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 relative overflow-hidden">
@@ -198,7 +201,7 @@ export default function LoginPage() {
         <CardFooter className="flex flex-col text-center justify-center gap-3.5 border-t border-border/40 pt-4">
           <p className="text-xs text-muted-foreground">
             Don't have an account?{" "}
-            <Link href={`/register${searchParams.get("from") ? `?from=${encodeURIComponent(searchParams.get("from")!)}` : ""}`} className="text-primary hover:underline font-semibold">
+            <Link href={`/register${safeFrom ? `?from=${encodeURIComponent(safeFrom)}` : ""}`} className="text-primary hover:underline font-semibold">
               Sign Up
             </Link>
           </p>
@@ -208,5 +211,13 @@ export default function LoginPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-muted-foreground">Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

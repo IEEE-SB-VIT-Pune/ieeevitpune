@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import connectDB from "@/lib/db";
 import { User } from "@/models/User";
-import { signJWT } from "@/lib/jwt";
+import { getDefaultJwtExpiry, signJWT } from "@/lib/jwt";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -59,9 +59,9 @@ export async function POST(request: Request) {
       status: user.status,
     };
     
-    // Cookie expiry
-    const maxAge = rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60; // 30 days or 1 day
-    const token = await signJWT(payload, rememberMe ? "30d" : "1d");
+    // Cookie expiry: remember-me = 30d; otherwise JWT_EXPIRES_IN (default 1d)
+    const maxAge = rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60;
+    const token = await signJWT(payload, rememberMe ? "30d" : getDefaultJwtExpiry());
 
     // 5. Update lastLogin
     user.lastLogin = new Date();

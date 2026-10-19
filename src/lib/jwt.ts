@@ -1,22 +1,35 @@
 import { SignJWT, jwtVerify } from "jose";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "super-secret-jwt-key-replace-in-production-12984712093847"
-);
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error(
+      "JWT_SECRET must be set in the environment and be at least 32 characters long"
+    );
+  }
+  return new TextEncoder().encode(secret);
+}
 
-export async function signJWT(payload: Record<string, any>, expiry: string = "7d") {
+export function getDefaultJwtExpiry(): string {
+  return process.env.JWT_EXPIRES_IN || "1d";
+}
+
+export async function signJWT(
+  payload: Record<string, unknown>,
+  expiry: string = getDefaultJwtExpiry()
+) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expiry)
-    .sign(JWT_SECRET);
+    .sign(getJwtSecret());
 }
 
 export async function verifyJWT(token: string) {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, getJwtSecret());
     return payload;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
